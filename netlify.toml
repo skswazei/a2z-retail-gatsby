@@ -1,0 +1,23 @@
+[build]
+  command = "npm run build"
+  publish = "public"
+
+[build.environment]
+  NODE_VERSION = "20"
+  GATSBY_API_BASE_URL = "https://a2ztemp-78490f.ingress-erytho.ewp.live"
+  GATSBY_SITE_URL = "https://new-a2zpos.netlify.app"
+  GATSBY_DEFAULT_TITLE = "A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets"
+  GATSBY_DEFAULT_DESCRIPTION = "One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "same-origin"
+
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
