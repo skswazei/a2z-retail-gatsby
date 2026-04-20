@@ -4,24 +4,8 @@ import { useLocation } from "@reach/router";
 import { Menu, X } from "lucide-react";
 import logo from "@/assets/a2z-logo.png";
 import { useDemoModal } from "@/components/DemoModal";
-
-const softwareLinks = [
-  { label: "Ring Sales", path: "/software/ring-sales" },
-  { label: "Inventory", path: "/software/inventory" },
-  { label: "Employees", path: "/software/employees" },
-  { label: "Reporting", path: "/software/reporting" },
-  { label: "E-Orders", path: "/software/e-orders" },
-  { label: "Loyalty", path: "/software/loyalty" },
-];
-
-const hardwareLinks = [
-  { label: "POS", path: "/hardware/pos" },
-  { label: "Barcode Scanner", path: "/hardware/barcode-scanner" },
-  { label: "Receipt Printer", path: "/hardware/receipt-printer" },
-  { label: "Label Printer", path: "/hardware/label-printer" },
-  { label: "Customer Screen", path: "/hardware/customer-screen" },
-  { label: "Credit Card Reader", path: "/hardware/credit-card-reader" },
-];
+import { useThemeOptions, telHref, mailHref } from "@/components/ThemeOptionsProvider";
+import { useMenus } from "@/components/MenusProvider";
 
 const aboutLinks = [
   { label: "Our Story", path: "/about/our-story" },
@@ -37,6 +21,10 @@ const Header = () => {
   const [aboutOpen, setAboutOpen] = useState(false);
   const location = useLocation();
   const { openDemoModal } = useDemoModal();
+  const { contact, auth_links } = useThemeOptions();
+  const menus = useMenus();
+  const softwareLinks = menus["header-software"];
+  const hardwareLinks = menus["header-hardware"];
 
   const isActive = (path: string) => location.pathname.startsWith(path);
 
@@ -73,19 +61,23 @@ const Header = () => {
             </button>
           </div>
           <div className="flex items-center xl:space-x-6 lg:space-x-4 space-x-3">
-            <a href="mailto:contact@a2zpos.io" className="hidden sm:flex items-center hover:text-white/90 whitespace-nowrap">
-              <svg className="w-4 h-4 xl:mr-2 lg:mr-1.5 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-              </svg>
-              <span>contact@a2zpos.io</span>
-            </a>
-            <a href="tel:+18332297677" className="hidden sm:flex items-center hover:text-white/90 whitespace-nowrap">
-              <svg className="w-4 h-4 xl:mr-2 lg:mr-1.5 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-              </svg>
-              <span>(833) 229-7677</span>
-            </a>
+            {contact.email && (
+              <a href={mailHref(contact.email)} className="hidden sm:flex items-center hover:text-white/90 whitespace-nowrap">
+                <svg className="w-4 h-4 xl:mr-2 lg:mr-1.5 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
+                <span>{contact.email}</span>
+              </a>
+            )}
+            {contact.phone && (
+              <a href={telHref(contact.phone)} className="hidden sm:flex items-center hover:text-white/90 whitespace-nowrap">
+                <svg className="w-4 h-4 xl:mr-2 lg:mr-1.5 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                </svg>
+                <span>{contact.phone}</span>
+              </a>
+            )}
           </div>
         </div>
       </div>
@@ -109,60 +101,64 @@ const Header = () => {
               {/* Desktop Nav */}
               <nav className="hidden items-center lg:flex xl:space-x-1 lg:space-x-0.5">
                 {/* Software Dropdown */}
-                <div className="relative group flex items-center">
-                  <div className="flex items-center xl:px-4 lg:px-2 relative group-hover:bg-[#4B36BF]/10 rounded-lg">
-                    <span className={`relative py-2 group-hover:text-[#4B36BF] transition-colors duration-300 flex items-center cursor-pointer whitespace-nowrap text-[15px] xl:text-base lg:text-sm ${
-                      isActive("/software") ? "text-[#4B36BF]" : "text-black/80"
-                    }`}>
-                      <span className="relative z-10">Software</span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#4B36BF]/0 to-[#00BCD4]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
-                    </span>
-                    <svg className="ml-1 w-4 h-4 text-[#1a1a2e]/60 group-hover:text-[#4B36BF] transition-colors duration-300" width="16" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 6L8.5 10L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                  <div className="absolute top-full left-0 w-64 bg-white/95 backdrop-blur-xl border border-[#4B36BF]/15 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                    <div className="p-2">
-                      {softwareLinks.map((link) => (
-                        <Link
-                          key={link.path}
-                          to={link.path}
-                          className="block p-2 text-sm text-black/80 hover:text-[#4B36BF] hover:bg-[#4B36BF]/10 rounded-lg transition-colors duration-200"
-                        >
-                          {link.label}
-                        </Link>
-                      ))}
+                {softwareLinks.length > 0 && (
+                  <div className="relative group flex items-center">
+                    <div className="flex items-center xl:px-4 lg:px-2 relative group-hover:bg-[#4B36BF]/10 rounded-lg">
+                      <span className={`relative py-2 group-hover:text-[#4B36BF] transition-colors duration-300 flex items-center cursor-pointer whitespace-nowrap text-[15px] xl:text-base lg:text-sm ${
+                        isActive("/software") ? "text-[#4B36BF]" : "text-black/80"
+                      }`}>
+                        <span className="relative z-10">Software</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#4B36BF]/0 to-[#00BCD4]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                      </span>
+                      <svg className="ml-1 w-4 h-4 text-[#1a1a2e]/60 group-hover:text-[#4B36BF] transition-colors duration-300" width="16" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 6L8.5 10L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                    <div className="absolute top-full left-0 w-64 bg-white/95 backdrop-blur-xl border border-[#4B36BF]/15 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                      <div className="p-2">
+                        {softwareLinks.map((link) => (
+                          <Link
+                            key={link.path}
+                            to={link.path}
+                            className="block p-2 text-sm text-black/80 hover:text-[#4B36BF] hover:bg-[#4B36BF]/10 rounded-lg transition-colors duration-200"
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
 
                 {/* Hardware Dropdown */}
-                <div className="relative group flex items-center">
-                  <div className="flex items-center xl:px-4 lg:px-2 relative group-hover:bg-[#4B36BF]/10 rounded-lg">
-                    <span className={`relative py-2 group-hover:text-[#4B36BF] transition-colors duration-300 flex items-center cursor-pointer whitespace-nowrap text-[15px] xl:text-base lg:text-sm ${
-                      isActive("/hardware") ? "text-[#4B36BF]" : "text-black/80"
-                    }`}>
-                      <span className="relative z-10">Hardware</span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#4B36BF]/0 to-[#00BCD4]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
-                    </span>
-                    <svg className="ml-1 w-4 h-4 text-[#1a1a2e]/60 group-hover:text-[#4B36BF] transition-colors duration-300" width="16" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 6L8.5 10L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                  <div className="absolute top-full left-0 w-64 bg-white/95 backdrop-blur-xl border border-[#4B36BF]/15 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                    <div className="p-2">
-                      {hardwareLinks.map((link) => (
-                        <Link
-                          key={link.path}
-                          to={link.path}
-                          className="block p-2 text-sm text-black/80 hover:text-[#4B36BF] hover:bg-[#4B36BF]/10 rounded-lg transition-colors duration-200"
-                        >
-                          {link.label}
-                        </Link>
-                      ))}
+                {hardwareLinks.length > 0 && (
+                  <div className="relative group flex items-center">
+                    <div className="flex items-center xl:px-4 lg:px-2 relative group-hover:bg-[#4B36BF]/10 rounded-lg">
+                      <span className={`relative py-2 group-hover:text-[#4B36BF] transition-colors duration-300 flex items-center cursor-pointer whitespace-nowrap text-[15px] xl:text-base lg:text-sm ${
+                        isActive("/hardware") ? "text-[#4B36BF]" : "text-black/80"
+                      }`}>
+                        <span className="relative z-10">Hardware</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#4B36BF]/0 to-[#00BCD4]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                      </span>
+                      <svg className="ml-1 w-4 h-4 text-[#1a1a2e]/60 group-hover:text-[#4B36BF] transition-colors duration-300" width="16" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 6L8.5 10L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                    <div className="absolute top-full left-0 w-64 bg-white/95 backdrop-blur-xl border border-[#4B36BF]/15 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                      <div className="p-2">
+                        {hardwareLinks.map((link) => (
+                          <Link
+                            key={link.path}
+                            to={link.path}
+                            className="block p-2 text-sm text-black/80 hover:text-[#4B36BF] hover:bg-[#4B36BF]/10 rounded-lg transition-colors duration-200"
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
 
                 {/* About Dropdown */}
                 <div className="relative group flex items-center">
@@ -226,12 +222,16 @@ const Header = () => {
               {/* Right side */}
               <div className="flex items-center xl:space-x-4 lg:space-x-2 space-x-4">
                 <div className="hidden sm:flex items-center xl:space-x-4 lg:space-x-2 space-x-4">
-                  <a
-                    href="#"
-                    className="xl:!px-6 lg:!px-4 !px-6 !py-2.5 whitespace-nowrap text-[15px] xl:text-base lg:text-sm bg-white text-[#4B36BF] border border-[#747ED1]/50 rounded-[10px] shadow-[0px_1px_4px_0px_#2D185D26] opacity-90 font-semibold transition-all duration-300 hover:opacity-100 hover:scale-105 hover:shadow-[0_8px_25px_#00000080]"
-                  >
-                    Merchant Login
-                  </a>
+                  {auth_links.login && (
+                    <a
+                      href={auth_links.login}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="xl:!px-6 lg:!px-4 !px-6 !py-2.5 whitespace-nowrap text-[15px] xl:text-base lg:text-sm bg-white text-[#4B36BF] border border-[#747ED1]/50 rounded-[10px] shadow-[0px_1px_4px_0px_#2D185D26] opacity-90 font-semibold transition-all duration-300 hover:opacity-100 hover:scale-105 hover:shadow-[0_8px_25px_#00000080]"
+                    >
+                      Merchant Login
+                    </a>
+                  )}
                   <button
                     onClick={openDemoModal}
                     className="xl:!px-6 lg:!px-4 !px-6 !py-2.5 whitespace-nowrap text-[15px] xl:text-base lg:text-sm bg-gradient-to-r from-[#568EF5] to-[#4B36BF] text-white border border-[#747ED1]/50 rounded-[10px] shadow-[0px_1px_4px_0px_#2D185D26] opacity-90 font-semibold transition-all duration-300 hover:opacity-100 hover:scale-105 hover:shadow-[0_8px_25px_#00000080]"
@@ -263,55 +263,63 @@ const Header = () => {
               mobileOpen ? 'max-h-[80vh] mt-4' : 'max-h-0'
             }`}>
               <nav className="flex flex-col space-y-2 pb-4 max-h-[75vh] overflow-y-auto">
-                <button
-                  onClick={() => setSoftwareOpen(!softwareOpen)}
-                  className="flex w-full items-center justify-between px-4 py-2 text-black/80 transition-colors duration-300 rounded-lg"
-                >
-                  <span>Software</span>
-                  <svg className={`w-4 h-4 transition-transform duration-300 ${softwareOpen ? 'rotate-180' : ''}`} width="16" height="16" viewBox="0 0 17 16" fill="none">
-                    <path d="M4 6L8.5 10L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-                <div
-                  className="ml-4 space-y-1 overflow-hidden transition-all duration-300 rounded-lg bg-[#4B36BF]/5"
-                  style={{ maxHeight: softwareOpen ? '500px' : '0', opacity: softwareOpen ? '1' : '0' }}
-                >
-                  {softwareLinks.map((link) => (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      onClick={() => setMobileOpen(false)}
-                      className="block px-4 py-2 text-sm text-black/80 rounded-lg transition-colors duration-200"
+                {softwareLinks.length > 0 && (
+                  <>
+                    <button
+                      onClick={() => setSoftwareOpen(!softwareOpen)}
+                      className="flex w-full items-center justify-between px-4 py-2 text-black/80 transition-colors duration-300 rounded-lg"
                     >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
+                      <span>Software</span>
+                      <svg className={`w-4 h-4 transition-transform duration-300 ${softwareOpen ? 'rotate-180' : ''}`} width="16" height="16" viewBox="0 0 17 16" fill="none">
+                        <path d="M4 6L8.5 10L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <div
+                      className="ml-4 space-y-1 overflow-hidden transition-all duration-300 rounded-lg bg-[#4B36BF]/5"
+                      style={{ maxHeight: softwareOpen ? '500px' : '0', opacity: softwareOpen ? '1' : '0' }}
+                    >
+                      {softwareLinks.map((link) => (
+                        <Link
+                          key={link.path}
+                          to={link.path}
+                          onClick={() => setMobileOpen(false)}
+                          className="block px-4 py-2 text-sm text-black/80 rounded-lg transition-colors duration-200"
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                )}
 
-                <button
-                  onClick={() => setHardwareOpen(!hardwareOpen)}
-                  className="flex w-full items-center justify-between px-4 py-2 text-black/80 transition-colors duration-300 rounded-lg"
-                >
-                  <span>Hardware</span>
-                  <svg className={`w-4 h-4 transition-transform duration-300 ${hardwareOpen ? 'rotate-180' : ''}`} width="16" height="16" viewBox="0 0 17 16" fill="none">
-                    <path d="M4 6L8.5 10L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-                <div
-                  className="ml-4 space-y-1 overflow-hidden transition-all duration-300 rounded-lg bg-[#4B36BF]/5"
-                  style={{ maxHeight: hardwareOpen ? '500px' : '0', opacity: hardwareOpen ? '1' : '0' }}
-                >
-                  {hardwareLinks.map((link) => (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      onClick={() => setMobileOpen(false)}
-                      className="block px-4 py-2 text-sm text-black/80 rounded-lg transition-colors duration-200"
+                {hardwareLinks.length > 0 && (
+                  <>
+                    <button
+                      onClick={() => setHardwareOpen(!hardwareOpen)}
+                      className="flex w-full items-center justify-between px-4 py-2 text-black/80 transition-colors duration-300 rounded-lg"
                     >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
+                      <span>Hardware</span>
+                      <svg className={`w-4 h-4 transition-transform duration-300 ${hardwareOpen ? 'rotate-180' : ''}`} width="16" height="16" viewBox="0 0 17 16" fill="none">
+                        <path d="M4 6L8.5 10L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <div
+                      className="ml-4 space-y-1 overflow-hidden transition-all duration-300 rounded-lg bg-[#4B36BF]/5"
+                      style={{ maxHeight: hardwareOpen ? '500px' : '0', opacity: hardwareOpen ? '1' : '0' }}
+                    >
+                      {hardwareLinks.map((link) => (
+                        <Link
+                          key={link.path}
+                          to={link.path}
+                          onClick={() => setMobileOpen(false)}
+                          className="block px-4 py-2 text-sm text-black/80 rounded-lg transition-colors duration-200"
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                )}
 
                 <button
                   onClick={() => setAboutOpen(!aboutOpen)}
@@ -355,12 +363,16 @@ const Header = () => {
                 </Link>
 
                 <div className="sm:hidden flex flex-col gap-2 mt-4">
-                  <a
-                    href="#"
-                    className="!px-6 !py-2.5 text-center bg-white text-[#4B36BF] border border-[#747ED1]/50 rounded-[10px] shadow-[0px_1px_4px_0px_#2D185D26] font-semibold transition-all duration-300"
-                  >
-                    Merchant Login
-                  </a>
+                  {auth_links.login && (
+                    <a
+                      href={auth_links.login}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="!px-6 !py-2.5 text-center bg-white text-[#4B36BF] border border-[#747ED1]/50 rounded-[10px] shadow-[0px_1px_4px_0px_#2D185D26] font-semibold transition-all duration-300"
+                    >
+                      Merchant Login
+                    </a>
+                  )}
                   <button
                     onClick={() => { setMobileOpen(false); openDemoModal(); }}
                     className="!px-6 !py-2.5 text-center bg-gradient-to-r from-[#568EF5] to-[#4B36BF] text-white border border-[#747ED1]/50 rounded-[10px] shadow-[0px_1px_4px_0px_#2D185D26] font-semibold transition-all duration-300"

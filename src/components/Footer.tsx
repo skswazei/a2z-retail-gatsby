@@ -2,24 +2,8 @@ import React, { useState } from "react";
 import { Link } from "gatsby";
 import logoWhite from "@/assets/a2z-logo-white.svg";
 import { submitSubscribe } from "@/services/api";
-
-const hardwareLinks = [
-  { label: "POS", path: "/hardware/pos" },
-  { label: "Barcode Scanner", path: "/hardware/barcode-scanner" },
-  { label: "Receipt Printer", path: "/hardware/receipt-printer" },
-  { label: "Label Printer", path: "/hardware/label-printer" },
-  { label: "Customer Screen", path: "/hardware/customer-screen" },
-  { label: "Credit Card Reader", path: "/hardware/credit-card-reader" },
-];
-
-const softwareLinks = [
-  { label: "Ring Sales", path: "/software/ring-sales" },
-  { label: "Inventory", path: "/software/inventory" },
-  { label: "Employees", path: "/software/employees" },
-  { label: "Reporting", path: "/software/reporting" },
-  { label: "E-Orders", path: "/software/e-orders" },
-  { label: "Loyalty", path: "/software/loyalty" },
-];
+import { useThemeOptions, telHref, mailHref } from "@/components/ThemeOptionsProvider";
+import { useMenus } from "@/components/MenusProvider";
 
 const aboutLinks = [
   { label: "Our Story", path: "/about/our-story" },
@@ -29,15 +13,13 @@ const aboutLinks = [
   { label: "Careers", path: "/about/careers" },
 ];
 
-const socialLinks = {
-  facebook: "https://www.facebook.com/a2zpos",
-  twitter: "https://twitter.com/a2zpos",
-  linkedin: "https://www.linkedin.com/company/a2zpos",
-  instagram: "https://www.instagram.com/a2zpos",
-  youtube: "https://www.youtube.com/@a2zpos",
-};
-
 const Footer = () => {
+  const { contact, social } = useThemeOptions();
+  const menus = useMenus();
+  const hardwareLinks = menus["footer-hardware"];
+  const softwareLinks = menus["footer-software"];
+  const legalLinks = menus["legal"];
+  const hasSocial = Object.values(social).some(Boolean);
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -127,32 +109,36 @@ const Footer = () => {
         {/* Links Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Hardware */}
-          <nav>
-            <h3 className="text-white text-lg font-semibold mb-4">Hardware</h3>
-            <ul className="space-y-3">
-              {hardwareLinks.map((link) => (
-                <li key={link.path}>
-                  <Link to={link.path} className="text-white/80 hover:text-white transition-all duration-300">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {hardwareLinks.length > 0 && (
+            <nav>
+              <h3 className="text-white text-lg font-semibold mb-4">Hardware</h3>
+              <ul className="space-y-3">
+                {hardwareLinks.map((link) => (
+                  <li key={link.path}>
+                    <Link to={link.path} className="text-white/80 hover:text-white transition-all duration-300">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
 
           {/* Software */}
-          <nav>
-            <h3 className="text-white text-lg font-semibold mb-4">Software</h3>
-            <ul className="space-y-3">
-              {softwareLinks.map((link) => (
-                <li key={link.path}>
-                  <Link to={link.path} className="text-white/80 hover:text-white transition-all duration-300">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {softwareLinks.length > 0 && (
+            <nav>
+              <h3 className="text-white text-lg font-semibold mb-4">Software</h3>
+              <ul className="space-y-3">
+                {softwareLinks.map((link) => (
+                  <li key={link.path}>
+                    <Link to={link.path} className="text-white/80 hover:text-white transition-all duration-300">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
 
           {/* About A2Z */}
           <nav>
@@ -170,65 +156,85 @@ const Footer = () => {
 
           {/* Connect & Contact */}
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Connect</h3>
-            <div className="flex items-center space-x-4">
+            {hasSocial && (
+              <>
+                <h3 className="text-white text-lg font-semibold mb-4">Connect</h3>
+                <div className="flex items-center space-x-4">
               {/* Facebook */}
-              <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="group relative block" aria-label="Facebook">
-                <div className="absolute inset-0 bg-white transition-all duration-500 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.1)] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden"></div>
-                <div className="relative flex items-center justify-center w-11 h-11">
-                  <svg className="w-[13px] h-[18px] text-[#4B36BF]/90 group-hover:text-[#4B36BF] transition-all duration-500 group-hover:scale-110" fill="currentColor" viewBox="0 0 320 512">
-                    <path d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z" />
-                  </svg>
-                </div>
-              </a>
+              {social.facebook && (
+                <a href={social.facebook} target="_blank" rel="noopener noreferrer" className="group relative block" aria-label="Facebook">
+                  <div className="absolute inset-0 bg-white transition-all duration-500 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.1)] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden"></div>
+                  <div className="relative flex items-center justify-center w-11 h-11">
+                    <svg className="w-[13px] h-[18px] text-[#4B36BF]/90 group-hover:text-[#4B36BF] transition-all duration-500 group-hover:scale-110" fill="currentColor" viewBox="0 0 320 512">
+                      <path d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z" />
+                    </svg>
+                  </div>
+                </a>
+              )}
               {/* Twitter */}
-              <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="group relative block" aria-label="Twitter">
-                <div className="absolute inset-0 bg-white transition-all duration-500 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.1)] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden"></div>
-                <div className="relative flex items-center justify-center w-11 h-11">
-                  <svg className="w-[18px] h-[18px] text-[#4B36BF]/90 group-hover:text-[#4B36BF] transition-all duration-500 group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
-                  </svg>
-                </div>
-              </a>
+              {social.twitter && (
+                <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="group relative block" aria-label="Twitter">
+                  <div className="absolute inset-0 bg-white transition-all duration-500 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.1)] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden"></div>
+                  <div className="relative flex items-center justify-center w-11 h-11">
+                    <svg className="w-[18px] h-[18px] text-[#4B36BF]/90 group-hover:text-[#4B36BF] transition-all duration-500 group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                    </svg>
+                  </div>
+                </a>
+              )}
               {/* LinkedIn */}
-              <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="group relative block" aria-label="LinkedIn">
-                <div className="absolute inset-0 bg-white transition-all duration-500 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.1)] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden"></div>
-                <div className="relative flex items-center justify-center w-11 h-11">
-                  <svg className="w-[18px] h-[18px] text-[#4B36BF]/90 group-hover:text-[#4B36BF] transition-all duration-500 group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z M2 9h4v12H2z M4 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2" />
-                  </svg>
-                </div>
-              </a>
+              {social.linkedin && (
+                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="group relative block" aria-label="LinkedIn">
+                  <div className="absolute inset-0 bg-white transition-all duration-500 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.1)] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden"></div>
+                  <div className="relative flex items-center justify-center w-11 h-11">
+                    <svg className="w-[18px] h-[18px] text-[#4B36BF]/90 group-hover:text-[#4B36BF] transition-all duration-500 group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z M2 9h4v12H2z M4 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2" />
+                    </svg>
+                  </div>
+                </a>
+              )}
               {/* Instagram */}
-              <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="group relative block" aria-label="Instagram">
-                <div className="absolute inset-0 bg-white transition-all duration-500 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.1)] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden"></div>
-                <div className="relative flex items-center justify-center w-11 h-11">
-                  <svg className="w-[18px] h-[18px] text-[#4B36BF]/90 group-hover:text-[#4B36BF] transition-all duration-500 group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                  </svg>
-                </div>
-              </a>
+              {social.instagram && (
+                <a href={social.instagram} target="_blank" rel="noopener noreferrer" className="group relative block" aria-label="Instagram">
+                  <div className="absolute inset-0 bg-white transition-all duration-500 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.1)] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden"></div>
+                  <div className="relative flex items-center justify-center w-11 h-11">
+                    <svg className="w-[18px] h-[18px] text-[#4B36BF]/90 group-hover:text-[#4B36BF] transition-all duration-500 group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg>
+                  </div>
+                </a>
+              )}
               {/* YouTube */}
-              <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" className="group relative block" aria-label="YouTube">
-                <div className="absolute inset-0 bg-white transition-all duration-500 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.1)] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden"></div>
-                <div className="relative flex items-center justify-center w-11 h-11">
-                  <svg className="w-[18px] h-[18px] text-[#4B36BF]/90 group-hover:text-[#4B36BF] transition-all duration-500 group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                  </svg>
+              {social.youtube && (
+                <a href={social.youtube} target="_blank" rel="noopener noreferrer" className="group relative block" aria-label="YouTube">
+                  <div className="absolute inset-0 bg-white transition-all duration-500 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.1)] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden"></div>
+                  <div className="relative flex items-center justify-center w-11 h-11">
+                    <svg className="w-[18px] h-[18px] text-[#4B36BF]/90 group-hover:text-[#4B36BF] transition-all duration-500 group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                    </svg>
+                  </div>
+                </a>
+              )}
                 </div>
-              </a>
-            </div>
+              </>
+            )}
 
             {/* Contact */}
-            <div className="mt-6">
-              <h4 className="text-white text-lg font-semibold mb-2">Contact</h4>
-              <a href="mailto:contact@a2zpos.io" className="text-white/80 hover:text-white transition-all duration-300 block mb-2">
-                contact@a2zpos.io
-              </a>
-              <a href="tel:+18332297677" className="text-white/80 hover:text-white transition-all duration-300">
-                (833) 229-7677
-              </a>
-            </div>
+            {(contact.email || contact.phone) && (
+              <div className="mt-6">
+                <h4 className="text-white text-lg font-semibold mb-2">Contact</h4>
+                {contact.email && (
+                  <a href={mailHref(contact.email)} className="text-white/80 hover:text-white transition-all duration-300 block mb-2">
+                    {contact.email}
+                  </a>
+                )}
+                {contact.phone && (
+                  <a href={telHref(contact.phone)} className="text-white/80 hover:text-white transition-all duration-300">
+                    {contact.phone}
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -238,17 +244,15 @@ const Footer = () => {
           <div className="pt-8 flex flex-col lg:flex-row justify-between items-center gap-4">
             <p className="text-white/80 text-sm hidden lg:block">&copy; {new Date().getFullYear()} A2Z Pos. All Rights Reserved.</p>
             <p className="text-white/80 text-sm hidden lg:block">Powered by Intelligent AI Insights.</p>
-            <nav className="flex flex-wrap justify-center gap-6">
-              <Link to="/privacy-policy" className="text-white/80 hover:text-white transition-all duration-300 text-sm">
-                Privacy Policy
-              </Link>
-              <Link to="/terms-and-conditions" className="text-white/80 hover:text-white transition-all duration-300 text-sm">
-                Terms of Service
-              </Link>
-              <Link to="/cookie-policy" className="text-white/80 hover:text-white transition-all duration-300 text-sm">
-                Cookie Policy
-              </Link>
-            </nav>
+            {legalLinks.length > 0 && (
+              <nav className="flex flex-wrap justify-center gap-6">
+                {legalLinks.map((link) => (
+                  <Link key={link.path} to={link.path} className="text-white/80 hover:text-white transition-all duration-300 text-sm">
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+            )}
             <p className="max-w-lg w-full text-white/80 text-sm lg:hidden flex sm:flex-row flex-col justify-between items-center gap-4">
               <span>&copy; {new Date().getFullYear()} A2Z Pos. All Rights Reserved.</span>
               <span>Powered by Intelligent AI Insights.</span>

@@ -6,7 +6,6 @@ import heroWatermark from "@/assets/hero-watermark.svg";
 import ctaParallaxBg from "@/assets/cta-image.png";
 
 interface SoftwarePageLayoutProps {
-  label: string;
   heroHeadline: ReactNode;
   heroSubheadline: string;
   heroImage?: string;
@@ -26,7 +25,6 @@ interface SoftwarePageLayoutProps {
 }
 
 const SoftwarePageLayout = ({
-  label,
   heroHeadline,
   heroSubheadline,
   heroImage,
@@ -87,7 +85,7 @@ const SoftwarePageLayout = ({
             </div>
             <div className="hidden md:flex items-center justify-center">
               {heroImage ? (
-                <img src={heroImage} alt={heroImageAlt || `${label} feature overview`} className={`w-full max-w-xl ${heroImageShadow ? "rounded-2xl shadow-lg" : ""} soft-fade-in-right soft-delay-2 transition-transform duration-500 hover:scale-[1.02]`} />
+                <img src={heroImage} alt={heroImageAlt || "Product feature overview"} className={`w-full max-w-xl ${heroImageShadow ? "rounded-2xl shadow-lg" : ""} soft-fade-in-right soft-delay-2 transition-transform duration-500 hover:scale-[1.02]`} />
               ) : (
                 <div className="w-full max-w-md aspect-[4/3] rounded-2xl border-2 border-dashed border-[#4B36BF]/30 bg-[#4B36BF]/5 flex items-center justify-center soft-fade-in-right soft-delay-2">
                   <div className="text-center">
@@ -119,7 +117,7 @@ const SoftwarePageLayout = ({
         <div className="grid items-center gap-10 md:grid-cols-2">
           <AnimateOnScroll className="flex items-center justify-center">
             {aboutImage ? (
-              <img src={aboutImage} alt={aboutImageAlt || `About ${label}`} className="w-full max-w-md rounded-2xl shadow-lg transition-transform duration-500 hover:scale-[1.03]" />
+              <img src={aboutImage} alt={aboutImageAlt || "About"} className="w-full max-w-md rounded-2xl shadow-lg transition-transform duration-500 hover:scale-[1.03]" />
             ) : (
               <div className="w-full max-w-md aspect-[4/3] rounded-2xl border-2 border-dashed border-[#4B36BF]/30 bg-[#4B36BF]/5 flex items-center justify-center">
                 <div className="text-center">
@@ -133,7 +131,7 @@ const SoftwarePageLayout = ({
           </AnimateOnScroll>
           <AnimateOnScroll delay={200}>
             <div className="rounded-2xl border border-border bg-card p-6 md:p-8 transition-all duration-300 hover:shadow-lg hover:border-[#4B36BF]/20">
-              <p className="body-text text-base leading-relaxed md:text-lg">{aboutText}</p>
+              <div className="body-text text-base leading-relaxed md:text-lg" dangerouslySetInnerHTML={{ __html: aboutText }} />
             </div>
           </AnimateOnScroll>
         </div>

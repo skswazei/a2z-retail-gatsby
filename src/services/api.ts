@@ -24,6 +24,109 @@ export const submitContactForm = async (data: ContactFormData) => {
   return result;
 };
 
+export interface ThemeOptions {
+  contact: { email: string; phone: string };
+  auth_links: { login: string };
+  social: {
+    facebook: string;
+    twitter: string;
+    linkedin: string;
+    instagram: string;
+    youtube: string;
+  };
+}
+
+export interface MenuItem {
+  id: number;
+  title: string;
+  url: string;
+  target: string;
+  type: string;
+  order: number;
+}
+
+export interface Menu {
+  id: number;
+  name: string;
+  slug: string;
+  items: MenuItem[];
+}
+
+export type MenusResponse = Record<string, Menu>;
+
+export type ProductType = "software" | "hardware";
+
+export interface ProductFeature {
+  title: string;
+  description: string;
+  icon_svg: string;
+}
+
+export interface Product {
+  id: number;
+  slug: string;
+  type: ProductType;
+  title: string;
+  hero: {
+    headline_html: string;
+    subheadline: string;
+    image_url: string;
+    image_alt: string;
+    image_shadow: boolean;
+  };
+  about: {
+    title_html: string;
+    text_html: string;
+    image_url: string;
+    image_alt: string;
+  };
+  features_title: string;
+  features: ProductFeature[];
+  closing: {
+    headline_html: string;
+    text_html: string;
+    cta1_label: string;
+  };
+  seo: {
+    title: string;
+    description: string;
+    keywords: string;
+    source?: "yoast" | "aioseo" | "custom";
+  };
+}
+
+export const fetchProducts = async (type: ProductType): Promise<Product[]> => {
+  const response = await fetch(`${API_BASE_URL}/wp-json/a2z/v1/${type}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${type} products`);
+  }
+  return response.json();
+};
+
+export const fetchProduct = async (type: ProductType, slug: string): Promise<Product> => {
+  const response = await fetch(`${API_BASE_URL}/wp-json/a2z/v1/${type}/${slug}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${type}/${slug}`);
+  }
+  return response.json();
+};
+
+export const fetchMenus = async (): Promise<MenusResponse> => {
+  const response = await fetch(`${API_BASE_URL}/wp-json/a2z/v1/menus`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch menus");
+  }
+  return response.json();
+};
+
+export const fetchThemeOptions = async (): Promise<ThemeOptions> => {
+  const response = await fetch(`${API_BASE_URL}/wp-json/a2z/v1/theme-options`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch theme options");
+  }
+  return response.json();
+};
+
 export const submitSubscribe = async (email: string) => {
   const response = await fetch(`${API_BASE_URL}/wp-json/a2z-subscribe/v1/subscribe`, {
     method: "POST",

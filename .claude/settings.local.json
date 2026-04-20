@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill *)",
+      "Bash(php -l \"C:\\\\wamp64\\\\www\\\\a2z-website-wordpress\\\\wp-content\\\\themes\\\\a2z-website-wordpress\\\\functions.php\")",
+      "Bash(\"C:/wamp64/bin/php/php8.2.13/php.exe\" -l \"C:/wamp64/www/a2z-website-wordpress/wp-content/themes/a2z-website-wordpress/functions.php\")",
+      "Bash(C:/wamp64/bin/php/php8.2.29/php.exe *)",
+      "Bash(node scripts/build-icon-svgs.js)",
+      "Bash(node -e \"console.log\\(Object.keys\\(require\\('./scripts/icons.json'\\)\\).length + ' icons'\\)\")",
+      "Bash(node -e \"console.log\\(Object.keys\\(require\\('./scripts/icons.json'\\)\\).length + ' icons ready'\\)\")",
+      "Bash(node -e \"const i=require\\('./scripts/icons.json'\\); console.log\\(i.ScanBarcode\\)\")",
+      "Bash(node scripts/build-seed.js)",
+      "Bash(curl -s http://localhost/a2z-website-wordpress/seed-products.php)",
+      "Bash(curl -s http://localhost/a2z-website-wordpress/wp-json/a2z/v1/software)",
+      "Bash(node -e \"require\\('dotenv'\\).config\\({path: '.env.development'}\\); console.log\\(process.env.GATSBY_API_BASE_URL\\)\")",
+      "Bash(curl *)",
+      "mcp__playwright__playwright_navigate",
+      "mcp__playwright__playwright_console_logs",
+      "mcp__playwright__playwright_get_visible_text",
+      "mcp__playwright__playwright_evaluate",
+      "mcp__playwright__playwright_screenshot",
+      "mcp__playwright__playwright_close",
+      "Bash(awk '{print $5\" \"$9}')",
+      "Bash(python -c \"import sys, json; d=json.load\\(sys.stdin\\); print\\('WP subheadline:', d['hero']['subheadline'][:80]\\)\")",
+      "Bash(python -c \"import sys, json; d=json.load\\(sys.stdin\\); print\\('POST_ID:', d['id']\\);\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('  hero.subheadline:', repr\\(d['hero']['subheadline'][:60]\\)\\); print\\('  feature[0].title :', repr\\(d['features'][0]['title']\\)\\)\")",
+      "Bash(python -c \"import sys, json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d['seo'], indent=2\\)\\)\")",
+      "Bash(python -c \"import sys, json; d=json.load\\(sys.stdin\\); print\\(d['seo']['source']\\)\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(f\\\\\"  {slug}: {len\\(m['items']\\)} items\\\\\"\\) for slug, m in d.items\\(\\)]\")",
+      "Bash(rm -rf C:/wamp64/www/a2z-retail-gatsby/scripts C:/tmp/a2z-recovered C:/tmp/a2z-visual)",
+      "Bash(rm -f C:/tmp/hero-verify-*.png C:/tmp/hardware-pos-*.png)",
+      "Bash(python -c ' *)",
+      "Bash(\"C:/wamp64/bin/php/php8.2.29/php.exe\" -l \"C:/wamp64/www/a2z-website-wordpress/wp-content/themes/a2z-website-wordpress/functions.php\")",
+      "Bash(\"C:/wamp64/bin/php/php8.2.29/php.exe\" -l \"C:/wamp64/www/a2z-website-wordpress/wp-content/themes/a2z-website-wordpress/inc/demo-import.php\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('hero_image:', d['hero']['image_url']\\); print\\('feature[0].title:', d['features'][0]['title']\\)\")",
+      "Bash(python -c \"import sys, json; d=json.load\\(sys.stdin\\); print\\('Icon URL:', d.get\\('source_url', 'n/a'\\)\\)\")",
+      "Bash(\"C:/wamp64/bin/php/php8.2.29/php.exe\" -l \"C:/wamp64/www/a2z-website-wordpress/wp-content/themes/a2z-website-wordpress/inc/login-ui.php\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f'  software count: {len\\(d\\)}'\\)\")"
+    ]
+  }
+}
