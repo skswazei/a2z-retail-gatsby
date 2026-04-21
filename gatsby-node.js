@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require("fs");
 
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV || "development"}`,
@@ -23,6 +24,34 @@ const fetchProducts = async (type, reporter) => {
     reporter.warn(`[${type}] fetch failed (${err.message}) — skipping`);
     return [];
   }
+};
+
+const writeBuildData = async (endpoint, filename, reporter) => {
+  const target = path.join(__dirname, "src/data", filename);
+  try {
+    const res = await fetch(`${API_BASE_URL}/wp-json/a2z/v1/${endpoint}`);
+    if (!res.ok) {
+      reporter.warn(`[a2z] ${endpoint} returned ${res.status} — leaving ${filename} unchanged`);
+      return;
+    }
+    const data = await res.json();
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, JSON.stringify(data, null, 2));
+    reporter.info(`[a2z] wrote ${filename}`);
+  } catch (err) {
+    reporter.warn(`[a2z] ${endpoint} fetch failed: ${err.message}`);
+  }
+};
+
+exports.onPreBootstrap = async ({ reporter }) => {
+  if (!API_BASE_URL) {
+    reporter.warn("[a2z] GATSBY_API_BASE_URL not set — build-time data will be empty");
+    return;
+  }
+  await Promise.all([
+    writeBuildData("menus", "menus.json", reporter),
+    writeBuildData("theme-options", "theme-options.json", reporter),
+  ]);
 };
 
 exports.createPages = async ({ actions, reporter }) => {

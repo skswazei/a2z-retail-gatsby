@@ -1,0 +1,6 @@
+# Append these lines to your .htaccess on the Hostinger test server only.
+# They tell search engines not to index any page, regardless of robots.txt.
+
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow, noarchive"
+</IfModule>

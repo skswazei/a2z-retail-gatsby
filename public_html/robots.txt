@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://a2zpos.io/sitemap-index.xml
+Host: https://a2zpos.io

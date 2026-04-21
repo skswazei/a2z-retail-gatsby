@@ -1,0 +1,334 @@
+{
+  "header-hardware": {
+    "id": 28,
+    "name": "Header Hardware",
+    "slug": "header-hardware",
+    "items": [
+      {
+        "id": 1931,
+        "title": "POS",
+        "url": "/hardware/pos",
+        "slug": "pos",
+        "target": "_self",
+        "type": "post_type",
+        "object": "hardware",
+        "object_id": 1919,
+        "order": 1
+      },
+      {
+        "id": 1932,
+        "title": "Barcode Scanner",
+        "url": "/hardware/barcode-scanner",
+        "slug": "barcode-scanner",
+        "target": "_self",
+        "type": "post_type",
+        "object": "hardware",
+        "object_id": 1907,
+        "order": 2
+      },
+      {
+        "id": 1933,
+        "title": "Receipt Printer",
+        "url": "/hardware/receipt-printer",
+        "slug": "receipt-printer",
+        "target": "_self",
+        "type": "post_type",
+        "object": "hardware",
+        "object_id": 1922,
+        "order": 3
+      },
+      {
+        "id": 1934,
+        "title": "Label Printer",
+        "url": "/hardware/label-printer",
+        "slug": "label-printer",
+        "target": "_self",
+        "type": "post_type",
+        "object": "hardware",
+        "object_id": 1916,
+        "order": 4
+      },
+      {
+        "id": 1935,
+        "title": "Customer Screen",
+        "url": "/hardware/customer-screen",
+        "slug": "customer-screen",
+        "target": "_self",
+        "type": "post_type",
+        "object": "hardware",
+        "object_id": 1913,
+        "order": 5
+      },
+      {
+        "id": 1936,
+        "title": "Credit Card Reader",
+        "url": "/hardware/credit-card-reader",
+        "slug": "credit-card-reader",
+        "target": "_self",
+        "type": "post_type",
+        "object": "hardware",
+        "object_id": 1910,
+        "order": 6
+      }
+    ]
+  },
+  "header-software": {
+    "id": 29,
+    "name": "Header Software",
+    "slug": "header-software",
+    "items": [
+      {
+        "id": 1925,
+        "title": "Ring Sales",
+        "url": "/software/ring-sales",
+        "slug": "ring-sales",
+        "target": "_self",
+        "type": "post_type",
+        "object": "software",
+        "object_id": 1904,
+        "order": 1
+      },
+      {
+        "id": 1926,
+        "title": "Inventory",
+        "url": "/software/inventory",
+        "slug": "inventory",
+        "target": "_self",
+        "type": "post_type",
+        "object": "software",
+        "object_id": 1895,
+        "order": 2
+      },
+      {
+        "id": 1927,
+        "title": "Employees",
+        "url": "/software/employees",
+        "slug": "employees",
+        "target": "_self",
+        "type": "post_type",
+        "object": "software",
+        "object_id": 1892,
+        "order": 3
+      },
+      {
+        "id": 1928,
+        "title": "Reporting",
+        "url": "/software/reporting",
+        "slug": "reporting",
+        "target": "_self",
+        "type": "post_type",
+        "object": "software",
+        "object_id": 1901,
+        "order": 4
+      },
+      {
+        "id": 1929,
+        "title": "E-Orders",
+        "url": "/software/e-orders",
+        "slug": "e-orders",
+        "target": "_self",
+        "type": "post_type",
+        "object": "software",
+        "object_id": 1889,
+        "order": 5
+      },
+      {
+        "id": 1930,
+        "title": "Loyalty",
+        "url": "/software/loyalty",
+        "slug": "loyalty",
+        "target": "_self",
+        "type": "post_type",
+        "object": "software",
+        "object_id": 1898,
+        "order": 6
+      }
+    ]
+  },
+  "footer-hardware": {
+    "id": 30,
+    "name": "Footer Hardware",
+    "slug": "footer-hardware",
+    "items": [
+      {
+        "id": 1943,
+        "title": "POS",
+        "url": "/hardware/pos",
+        "slug": "pos",
+        "target": "_self",
+        "type": "post_type",
+        "object": "hardware",
+        "object_id": 1919,
+        "order": 1
+      },
+      {
+        "id": 1944,
+        "title": "Barcode Scanner",
+        "url": "/hardware/barcode-scanner",
+        "slug": "barcode-scanner",
+        "target": "_self",
+        "type": "post_type",
+        "object": "hardware",
+        "object_id": 1907,
+        "order": 2
+      },
+      {
+        "id": 1945,
+        "title": "Receipt Printer",
+        "url": "/hardware/receipt-printer",
+        "slug": "receipt-printer",
+        "target": "_self",
+        "type": "post_type",
+        "object": "hardware",
+        "object_id": 1922,
+        "order": 3
+      },
+      {
+        "id": 1946,
+        "title": "Label Printer",
+        "url": "/hardware/label-printer",
+        "slug": "label-printer",
+        "target": "_self",
+        "type": "post_type",
+        "object": "hardware",
+        "object_id": 1916,
+        "order": 4
+      },
+      {
+        "id": 1947,
+        "title": "Customer Screen",
+        "url": "/hardware/customer-screen",
+        "slug": "customer-screen",
+        "target": "_self",
+        "type": "post_type",
+        "object": "hardware",
+        "object_id": 1913,
+        "order": 5
+      },
+      {
+        "id": 1948,
+        "title": "Credit Card Reader",
+        "url": "/hardware/credit-card-reader",
+        "slug": "credit-card-reader",
+        "target": "_self",
+        "type": "post_type",
+        "object": "hardware",
+        "object_id": 1910,
+        "order": 6
+      }
+    ]
+  },
+  "footer-software": {
+    "id": 31,
+    "name": "Footer Software",
+    "slug": "footer-software",
+    "items": [
+      {
+        "id": 1937,
+        "title": "Ring Sales",
+        "url": "/software/ring-sales",
+        "slug": "ring-sales",
+        "target": "_self",
+        "type": "post_type",
+        "object": "software",
+        "object_id": 1904,
+        "order": 1
+      },
+      {
+        "id": 1938,
+        "title": "Inventory",
+        "url": "/software/inventory",
+        "slug": "inventory",
+        "target": "_self",
+        "type": "post_type",
+        "object": "software",
+        "object_id": 1895,
+        "order": 2
+      },
+      {
+        "id": 1939,
+        "title": "Employees",
+        "url": "/software/employees",
+        "slug": "employees",
+        "target": "_self",
+        "type": "post_type",
+        "object": "software",
+        "object_id": 1892,
+        "order": 3
+      },
+      {
+        "id": 1940,
+        "title": "Reporting",
+        "url": "/software/reporting",
+        "slug": "reporting",
+        "target": "_self",
+        "type": "post_type",
+        "object": "software",
+        "object_id": 1901,
+        "order": 4
+      },
+      {
+        "id": 1941,
+        "title": "E-Orders",
+        "url": "/software/e-orders",
+        "slug": "e-orders",
+        "target": "_self",
+        "type": "post_type",
+        "object": "software",
+        "object_id": 1889,
+        "order": 5
+      },
+      {
+        "id": 1942,
+        "title": "Loyalty",
+        "url": "/software/loyalty",
+        "slug": "loyalty",
+        "target": "_self",
+        "type": "post_type",
+        "object": "software",
+        "object_id": 1898,
+        "order": 6
+      }
+    ]
+  },
+  "legal": {
+    "id": 32,
+    "name": "Legal",
+    "slug": "legal",
+    "items": [
+      {
+        "id": 1949,
+        "title": "Privacy Policy",
+        "url": "/privacy-policy",
+        "slug": "privacy-policy",
+        "target": "_self",
+        "type": "post_type",
+        "object": "page",
+        "object_id": 828,
+        "order": 1
+      },
+      {
+        "id": 1950,
+        "title": "Terms of Service",
+        "url": "/terms-and-conditions",
+        "slug": "terms-and-conditions",
+        "target": "_self",
+        "type": "post_type",
+        "object": "page",
+        "object_id": 711,
+        "order": 2
+      },
+      {
+        "id": 1951,
+        "title": "Cookie Policy",
+        "url": "/cookie-policy",
+        "slug": "cookie-policy",
+        "target": "_self",
+        "type": "post_type",
+        "object": "page",
+        "object_id": 710,
+        "order": 3
+      }
+    ]
+  }
+}

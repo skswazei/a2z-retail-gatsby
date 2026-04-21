@@ -1,9 +1,47 @@
 import React from "react";
+import bundledThemeOptions from "@/data/theme-options.json";
 
 interface BreadcrumbItem {
   name: string;
   url: string;
 }
+
+type ThemeOptionsShape = {
+  analytics?: {
+    google_site_verification?: string;
+    gtag_id?: string;
+  };
+};
+
+const analytics = (bundledThemeOptions as ThemeOptionsShape).analytics || {};
+const verificationRaw = (analytics.google_site_verification || "").trim();
+const gtagRaw = (analytics.gtag_id || "").trim();
+
+// User pastes the full <meta ... /> — pull out the content value.
+const verificationCode = (() => {
+  if (!verificationRaw) return "";
+  const m = verificationRaw.match(/content\s*=\s*["']([^"']+)["']/i);
+  return m ? m[1] : verificationRaw; // fallback: raw value if they pasted just the token
+})();
+
+// User pastes the full gtag snippet (external + inline script).
+// Extract the measurement ID and the inline init body.
+const gtagParsed = (() => {
+  if (!gtagRaw) return null;
+  const idMatch = gtagRaw.match(/[?&]id=([A-Za-z0-9_-]+)/) || gtagRaw.match(/\b(G-[A-Za-z0-9_-]+)\b/);
+  const id = idMatch ? (idMatch[1].startsWith("G-") ? idMatch[1] : idMatch[1]) : "";
+  const inlineMatch = gtagRaw.match(/<script[^>]*>([\s\S]*?)<\/script\s*>/gi);
+  let inline = "";
+  if (inlineMatch) {
+    for (const block of inlineMatch) {
+      if (/src\s*=/i.test(block)) continue; // skip the external loader
+      const innerMatch = block.match(/<script[^>]*>([\s\S]*?)<\/script\s*>/i);
+      if (innerMatch) { inline = innerMatch[1].trim(); break; }
+    }
+  }
+  if (!id && !inline) return null;
+  return { id, inline };
+})();
 
 interface SeoProps {
   title?: string;
@@ -83,6 +121,21 @@ const Seo = ({ title, description, pathname = "", keywords = "", ogImage = "", j
       {keywords && <meta name="keywords" content={keywords} />}
       <meta name="robots" content="index, follow" />
       <link rel="canonical" href={url} />
+
+      {verificationCode && (
+        <meta name="google-site-verification" content={verificationCode} />
+      )}
+      {gtagParsed?.id && (
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gtagParsed.id}`} />
+      )}
+      {gtagParsed && (gtagParsed.inline || gtagParsed.id) && (
+        <script
+          dangerouslySetInnerHTML={{
+            __html: gtagParsed.inline
+              || `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gtagParsed.id}');`,
+          }}
+        />
+      )}
 
       {/* Open Graph */}
       <meta property="og:type" content="website" />

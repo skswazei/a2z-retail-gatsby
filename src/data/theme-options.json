@@ -1,0 +1,20 @@
+{
+  "contact": {
+    "email": "contact@a2zpos.io",
+    "phone": "(833) 229-7677"
+  },
+  "auth_links": {
+    "login": "https://app.a2zpos.io/login"
+  },
+  "social": {
+    "facebook": "https://www.facebook.com/profile.php?id=61584519067304",
+    "twitter": "",
+    "linkedin": "https://www.linkedin.com/company/a2z-pos",
+    "instagram": "https://www.instagram.com/a2z.pos/",
+    "youtube": ""
+  },
+  "analytics": {
+    "google_site_verification": "<meta name=\"google-site-verification\" content=\"Tb3cxMpiltU_qmr00rfwN3UVKPh0etuPNIfUyT2BqbQ\" />",
+    "gtag_id": "<!-- Google tag (gtag.js) --> <script async src=\"https://www.googletagmanager.com/gtag/js?id=G-QNQTMWSXG8\"></script> <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());   gtag('config', 'G-QNQTMWSXG8'); </script>"
+  }
+}

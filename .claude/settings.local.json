@@ -37,7 +37,14 @@
       "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('hero_image:', d['hero']['image_url']\\); print\\('feature[0].title:', d['features'][0]['title']\\)\")",
       "Bash(python -c \"import sys, json; d=json.load\\(sys.stdin\\); print\\('Icon URL:', d.get\\('source_url', 'n/a'\\)\\)\")",
       "Bash(\"C:/wamp64/bin/php/php8.2.29/php.exe\" -l \"C:/wamp64/www/a2z-website-wordpress/wp-content/themes/a2z-website-wordpress/inc/login-ui.php\")",
-      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f'  software count: {len\\(d\\)}'\\)\")"
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f'  software count: {len\\(d\\)}'\\)\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('subheadline:', d['hero']['subheadline'][:150]\\)\")",
+      "Bash(rm -f \"../a2z-retail-build.zip\")",
+      "Bash(powershell -Command \"Compress-Archive -Path '*','.htaccess' -DestinationPath '../a2z-retail-build.zip' -Force\")",
+      "Bash(powershell *)",
+      "Bash(node *)",
+      "Bash(grep -oE 'window.dataLayer[^\"]{0,80}' C:/wamp64/www/a2z-retail-gatsby/public/index.html)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); a=d.get\\('analytics',{}\\); print\\('verification:', \\(a.get\\('google_site_verification',''\\) or '\\(empty\\)'\\)[:80]\\); print\\('gtag:', \\(a.get\\('gtag_id',''\\) or '\\(empty\\)'\\)[:80]\\)\")"
     ]
   }
 }
