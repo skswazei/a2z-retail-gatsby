@@ -127,6 +127,29 @@ export const fetchThemeOptions = async (): Promise<ThemeOptions> => {
   return response.json();
 };
 
+export interface SitemapItem {
+  id: number;
+  title: string;
+  slug: string;
+  link: string;
+  date: string;
+}
+
+export interface SitemapGroup {
+  label: string;
+  items: SitemapItem[];
+}
+
+export type SitemapResponse = Record<string, SitemapGroup>;
+
+export const fetchSitemap = async (): Promise<SitemapResponse> => {
+  const response = await fetch(`${API_BASE_URL}/wp-json/a2z/v1/sitemap`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch sitemap");
+  }
+  return response.json();
+};
+
 export const submitSubscribe = async (email: string) => {
   const response = await fetch(`${API_BASE_URL}/wp-json/a2z-subscribe/v1/subscribe`, {
     method: "POST",
