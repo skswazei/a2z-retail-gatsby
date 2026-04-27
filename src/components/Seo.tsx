@@ -47,13 +47,14 @@ interface SeoProps {
   title?: string;
   description?: string;
   pathname?: string;
+  canonicalPath?: string;
   keywords?: string;
   ogImage?: string;
   jsonLd?: Record<string, any>;
   breadcrumbs?: BreadcrumbItem[];
 }
 
-const Seo = ({ title, description, pathname = "", keywords = "", ogImage = "", jsonLd, breadcrumbs }: SeoProps) => {
+const Seo = ({ title, description, pathname = "", canonicalPath, keywords = "", ogImage = "", jsonLd, breadcrumbs }: SeoProps) => {
   const siteUrl = process.env.GATSBY_SITE_URL || "https://a2zpos.io";
   const defaultTitle = process.env.GATSBY_DEFAULT_TITLE || "A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets";
   const defaultDescription = process.env.GATSBY_DEFAULT_DESCRIPTION || "One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets.";
@@ -62,6 +63,7 @@ const Seo = ({ title, description, pathname = "", keywords = "", ogImage = "", j
   const pageTitle = title || defaultTitle;
   const pageDescription = description || defaultDescription;
   const url = `${siteUrl}${pathname}`;
+  const canonicalUrl = `${siteUrl}${canonicalPath ?? pathname}`;
   const fullTitle = pageTitle.includes("A2Z") ? pageTitle : `${pageTitle} | A2Z POS`;
 
   const websiteSchema = {
@@ -120,7 +122,7 @@ const Seo = ({ title, description, pathname = "", keywords = "", ogImage = "", j
       <meta name="description" content={pageDescription} />
       {keywords && <meta name="keywords" content={keywords} />}
       <meta name="robots" content="index, follow" />
-      <link rel="canonical" href={url} />
+      <link rel="canonical" href={canonicalUrl} />
 
       {verificationCode && (
         <meta name="google-site-verification" content={verificationCode} />

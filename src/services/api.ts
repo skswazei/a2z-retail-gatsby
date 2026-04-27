@@ -127,6 +127,57 @@ export const fetchThemeOptions = async (): Promise<ThemeOptions> => {
   return response.json();
 };
 
+export interface BlogCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+export interface BlogPostSummary {
+  id: number;
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  featured_image: {
+    url: string;
+    width: number;
+    height: number;
+    alt: string;
+  } | null;
+  categories: BlogCategory[];
+}
+
+export interface BlogPost extends BlogPostSummary {
+  content: string;
+  modified: string;
+  author: {
+    name: string;
+    avatar: string;
+  } | null;
+  tags: BlogCategory[];
+  seo: {
+    title: string;
+    description: string;
+  };
+}
+
+export const fetchPosts = async (): Promise<BlogPostSummary[]> => {
+  const response = await fetch(`${API_BASE_URL}/wp-json/a2z/v1/posts`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch posts");
+  }
+  return response.json();
+};
+
+export const fetchPost = async (slug: string): Promise<BlogPost> => {
+  const response = await fetch(`${API_BASE_URL}/wp-json/a2z/v1/posts/${slug}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch post: ${slug}`);
+  }
+  return response.json();
+};
+
 export interface SitemapItem {
   id: number;
   title: string;

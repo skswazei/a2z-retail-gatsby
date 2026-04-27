@@ -12,12 +12,17 @@ module.exports = {
   plugins: [
     `gatsby-plugin-image`,
     `gatsby-plugin-postcss`,
-    `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        excludes: [`/404`, `/dev-404-page`],
+      },
+    },
     {
       resolve: `gatsby-plugin-robots-txt`,
       options: {
         host: `https://a2zpos.io`,
-        sitemap: `https://a2zpos.io/sitemap-index.xml`,
+        sitemap: `https://a2zpos.io/sitemap.xml`,
         policy: [{ userAgent: `*`, allow: `/` }],
       },
     },

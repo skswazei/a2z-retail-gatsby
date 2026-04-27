@@ -54,25 +54,86 @@ exports.onPreBootstrap = async ({ reporter }) => {
   ]);
 };
 
+const fetchJson = async (endpoint, reporter) => {
+  if (!API_BASE_URL) {
+    reporter.warn(`GATSBY_API_BASE_URL is not set — skipping ${endpoint}`);
+    return null;
+  }
+  const url = `${API_BASE_URL}/wp-json/a2z/v1/${endpoint}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      reporter.warn(`[${endpoint}] ${url} returned ${res.status} — skipping`);
+      return null;
+    }
+    return await res.json();
+  } catch (err) {
+    reporter.warn(`[${endpoint}] fetch failed (${err.message}) — skipping`);
+    return null;
+  }
+};
+
 exports.createPages = async ({ actions, reporter }) => {
   const { createPage } = actions;
-  const template = path.resolve("./src/templates/product.tsx");
+  const productTemplate = path.resolve("./src/templates/product.tsx");
+  const blogPostTemplate = path.resolve("./src/templates/blog-post.tsx");
+  const blogListTemplate = path.resolve("./src/templates/blog-list.tsx");
 
-  const [software, hardware] = await Promise.all([
+  const [software, hardware, posts, blogSettings] = await Promise.all([
     fetchProducts("software", reporter),
     fetchProducts("hardware", reporter),
+    fetchJson("posts", reporter),
+    fetchJson("blog-settings", reporter),
   ]);
 
   [...software, ...hardware].forEach((product) => {
     if (!product || !product.slug || !product.type) return;
     createPage({
       path: `/${product.type}/${product.slug}`,
-      component: template,
+      component: productTemplate,
       context: { product },
     });
   });
 
-  reporter.info(`[a2z] Generated ${software.length} software + ${hardware.length} hardware pages`);
+  let blogPostCount = 0;
+  if (Array.isArray(posts)) {
+    for (const summary of posts) {
+      if (!summary || !summary.slug) continue;
+      const full = await fetchJson(`posts/${summary.slug}`, reporter);
+      if (!full) continue;
+      createPage({
+        path: `/blog/${full.slug}`,
+        component: blogPostTemplate,
+        context: { post: full },
+      });
+      blogPostCount++;
+    }
+  }
+
+  let blogListCount = 0;
+  if (Array.isArray(posts) && posts.length > 0) {
+    const perPage = blogSettings?.posts_per_page > 0 ? blogSettings.posts_per_page : 9;
+    const totalPages = Math.max(1, Math.ceil(posts.length / perPage));
+
+    for (let page = 1; page <= totalPages; page++) {
+      const slice = posts.slice((page - 1) * perPage, page * perPage);
+      createPage({
+        path: page === 1 ? `/blog` : `/blog/page/${page}`,
+        component: blogListTemplate,
+        context: {
+          posts: slice,
+          currentPage: page,
+          totalPages,
+          perPage,
+        },
+      });
+      blogListCount++;
+    }
+  }
+
+  reporter.info(
+    `[a2z] Generated ${software.length} software + ${hardware.length} hardware + ${blogPostCount} blog post + ${blogListCount} blog list pages`
+  );
 };
 
 exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {

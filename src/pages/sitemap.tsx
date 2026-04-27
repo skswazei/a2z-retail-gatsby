@@ -3,37 +3,88 @@ import { Link } from "gatsby";
 import Seo from "@/components/Seo";
 import Breadcrumb from "@/components/Breadcrumb";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
-import { Loader2, AlertCircle } from "lucide-react";
-import { fetchSitemap, SitemapResponse } from "@/services/api";
+import { Loader2 } from "lucide-react";
+import { fetchPosts, BlogPostSummary } from "@/services/api";
 import softwareHeroWatermark from "@/assets/software-hero-watermark.svg";
 
-const WP_BASE = process.env.GATSBY_API_BASE_URL ?? "";
+interface SitemapLink {
+  title: string;
+  path: string;
+}
 
-const toLocalPath = (link: string): string => {
-  if (!link) return "/";
-  if (WP_BASE && link.startsWith(WP_BASE)) {
-    const path = link.slice(WP_BASE.length);
-    return path.startsWith("/") ? path : `/${path}`;
-  }
-  try {
-    const url = new URL(link);
-    return url.pathname + url.search + url.hash;
-  } catch {
-    return link;
-  }
-};
+interface SitemapSection {
+  label: string;
+  items: SitemapLink[];
+}
+
+const staticSections: SitemapSection[] = [
+  {
+    label: "Main",
+    items: [
+      { title: "Home", path: "/" },
+      { title: "Packages", path: "/packages/" },
+      { title: "Blog", path: "/blog/" },
+      { title: "Contact Us", path: "/contact-us/" },
+    ],
+  },
+  {
+    label: "Software",
+    items: [
+      { title: "E-Orders", path: "/software/e-orders/" },
+      { title: "Employees", path: "/software/employees/" },
+      { title: "Inventory", path: "/software/inventory/" },
+      { title: "Loyalty", path: "/software/loyalty/" },
+      { title: "Reporting", path: "/software/reporting/" },
+      { title: "Ring Sales", path: "/software/ring-sales/" },
+    ],
+  },
+  {
+    label: "Hardware",
+    items: [
+      { title: "Barcode Scanner", path: "/hardware/barcode-scanner/" },
+      { title: "Credit Card Reader", path: "/hardware/credit-card-reader/" },
+      { title: "Customer Screen", path: "/hardware/customer-screen/" },
+      { title: "Label Printer", path: "/hardware/label-printer/" },
+      { title: "POS", path: "/hardware/pos/" },
+      { title: "Receipt Printer", path: "/hardware/receipt-printer/" },
+    ],
+  },
+  {
+    label: "About",
+    items: [
+      { title: "Our Story", path: "/about/our-story/" },
+      { title: "Why A2Z", path: "/about/why-a2z/" },
+      { title: "Success Stories", path: "/about/success-stories/" },
+      { title: "FAQs", path: "/about/faqs/" },
+    ],
+  },
+  {
+    label: "Legal",
+    items: [
+      { title: "Privacy Policy", path: "/privacy-policy/" },
+      { title: "Cookie Policy", path: "/cookie-policy/" },
+      { title: "Terms and Conditions", path: "/terms-and-conditions/" },
+    ],
+  },
+];
 
 const Sitemap = () => {
-  const [data, setData] = useState<SitemapResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [posts, setPosts] = useState<BlogPostSummary[] | null>(null);
+  const [loadingPosts, setLoadingPosts] = useState(true);
 
   useEffect(() => {
-    fetchSitemap()
-      .then(setData)
-      .catch((err) => setError(err instanceof Error ? err.message : "Failed to load sitemap"))
-      .finally(() => setLoading(false));
+    fetchPosts()
+      .then(setPosts)
+      .catch(() => setPosts([]))
+      .finally(() => setLoadingPosts(false));
   }, []);
+
+  const blogSection: SitemapSection | null = posts && posts.length > 0
+    ? {
+        label: "Blog Articles",
+        items: posts.map((p) => ({ title: p.title, path: `/blog/${p.slug}/` })),
+      }
+    : null;
 
   return (
     <div>
@@ -80,44 +131,57 @@ const Sitemap = () => {
         <div className="absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-[#4B36BF]/5 blur-3xl" />
 
         <div className="relative mx-auto max-w-6xl">
-          {loading && (
-            <div className="flex items-center justify-center gap-3 py-16 text-muted-foreground">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {staticSections.map((section, i) => (
+              <AnimateOnScroll key={section.label} delay={i * 100}>
+                <div className="card-elevated h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                  <h2 className="mb-4 text-xl font-bold text-foreground border-b border-[#4B36BF]/20 pb-3">
+                    {section.label}
+                  </h2>
+                  <ul className="space-y-2">
+                    {section.items.map((item) => (
+                      <li key={item.path}>
+                        <Link
+                          to={item.path}
+                          className="text-sm text-muted-foreground hover:text-[#4B36BF] hover:underline transition-colors"
+                        >
+                          {item.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </AnimateOnScroll>
+            ))}
+          </div>
+
+          {loadingPosts && (
+            <div className="mt-12 flex items-center justify-center gap-3 text-muted-foreground">
               <Loader2 className="h-5 w-5 animate-spin" />
-              <span>Loading sitemap...</span>
+              <span className="text-sm">Loading articles...</span>
             </div>
           )}
 
-          {error && !loading && (
-            <div className="card-elevated mx-auto max-w-md text-center">
-              <AlertCircle className="mx-auto mb-3 h-8 w-8 text-red-500" />
-              <p className="text-sm text-foreground">{error}</p>
-            </div>
-          )}
-
-          {data && !loading && !error && (
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {Object.entries(data).map(([type, group], i) => (
-                <AnimateOnScroll key={type} delay={i * 100}>
-                  <div className="card-elevated h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                    <h2 className="mb-4 text-xl font-bold text-foreground border-b border-[#4B36BF]/20 pb-3">
-                      {group.label}
-                    </h2>
-                    <ul className="space-y-2">
-                      {group.items.map((item) => (
-                        <li key={item.id}>
-                          <Link
-                            to={toLocalPath(item.link)}
-                            className="text-sm text-muted-foreground hover:text-[#4B36BF] hover:underline transition-colors"
-                          >
-                            {item.title}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </AnimateOnScroll>
-              ))}
-            </div>
+          {blogSection && (
+            <AnimateOnScroll>
+              <div className="mt-12 card-elevated">
+                <h2 className="mb-4 text-xl font-bold text-foreground border-b border-[#4B36BF]/20 pb-3">
+                  {blogSection.label}
+                </h2>
+                <ul className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+                  {blogSection.items.map((item) => (
+                    <li key={item.path}>
+                      <Link
+                        to={item.path}
+                        className="text-sm text-muted-foreground hover:text-[#4B36BF] hover:underline transition-colors"
+                      >
+                        {item.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </AnimateOnScroll>
           )}
         </div>
       </section>

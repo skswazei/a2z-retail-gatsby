@@ -9,6 +9,11 @@
   GATSBY_DEFAULT_TITLE = "A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets"
   GATSBY_DEFAULT_DESCRIPTION = "One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets."
 
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 200
+
 [[headers]]
   for = "/*"
   [headers.values]
