@@ -7,7 +7,7 @@ import { useMenus } from "@/components/MenusProvider";
 
 const aboutLinks = [
   { label: "Our Story", path: "/about/our-story" },
-  { label: "Blogs", path: "/about/blogs" },
+  { label: "Blogs", path: "/blog" },
   { label: "FAQs", path: "/about/faqs" },
   { label: "Contact Us", path: "/contact-us" },
   { label: "Careers", path: "/about/careers" },
@@ -108,12 +108,12 @@ const Footer = () => {
 
         {/* Links Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          {/* Hardware */}
-          {hardwareLinks.length > 0 && (
+          {/* Software */}
+          {softwareLinks.length > 0 && (
             <nav>
-              <h3 className="text-white text-lg font-semibold mb-4">Hardware</h3>
+              <h3 className="text-white text-lg font-semibold mb-4">Software</h3>
               <ul className="space-y-3">
-                {hardwareLinks.map((link) => (
+                {softwareLinks.map((link) => (
                   <li key={link.path}>
                     <Link to={link.path} className="text-white/80 hover:text-white transition-all duration-300">
                       {link.label}
@@ -124,12 +124,12 @@ const Footer = () => {
             </nav>
           )}
 
-          {/* Software */}
-          {softwareLinks.length > 0 && (
+          {/* Hardware */}
+          {hardwareLinks.length > 0 && (
             <nav>
-              <h3 className="text-white text-lg font-semibold mb-4">Software</h3>
+              <h3 className="text-white text-lg font-semibold mb-4">Hardware</h3>
               <ul className="space-y-3">
-                {softwareLinks.map((link) => (
+                {hardwareLinks.map((link) => (
                   <li key={link.path}>
                     <Link to={link.path} className="text-white/80 hover:text-white transition-all duration-300">
                       {link.label}
