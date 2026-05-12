@@ -37,7 +37,7 @@ const BlogPostTemplate = ({ pageContext }: { pageContext: PageContext }) => {
           <div className="mx-auto max-w-9xl">
             <Breadcrumb />
           </div>
-          <div className="mx-auto max-w-4xl">
+          <div className="mx-auto max-w-7xl">
             <AnimateOnScroll>
               {post.categories.length > 0 && (
                 <div className="mb-4 flex flex-wrap justify-center gap-2">
@@ -82,8 +82,8 @@ const BlogPostTemplate = ({ pageContext }: { pageContext: PageContext }) => {
       </section>
 
       <section className="relative px-4 py-12 md:px-8 md:py-16" style={{ background: "linear-gradient(to bottom right, #EDE9FF, #F5F3FF, #F8F7FF)" }}>
-        <div className="mx-auto max-w-4xl">
-          {post.featured_image?.url && (
+        {post.featured_image?.url && (
+          <div className="mx-auto max-w-7xl">
             <AnimateOnScroll>
               <img
                 src={post.featured_image.url}
@@ -91,8 +91,10 @@ const BlogPostTemplate = ({ pageContext }: { pageContext: PageContext }) => {
                 className="mb-10 w-full rounded-2xl shadow-xl"
               />
             </AnimateOnScroll>
-          )}
+          </div>
+        )}
 
+        <div className="mx-auto max-w-6xl">
           <AnimateOnScroll delay={100}>
             <div
               className="prose prose-lg max-w-none prose-headings:text-foreground prose-headings:font-bold prose-a:text-[#4B36BF] prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-img:rounded-xl prose-img:shadow-lg"

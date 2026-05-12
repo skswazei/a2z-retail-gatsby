@@ -44,7 +44,10 @@
       "Bash(powershell *)",
       "Bash(node *)",
       "Bash(grep -oE 'window.dataLayer[^\"]{0,80}' C:/wamp64/www/a2z-retail-gatsby/public/index.html)",
-      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); a=d.get\\('analytics',{}\\); print\\('verification:', \\(a.get\\('google_site_verification',''\\) or '\\(empty\\)'\\)[:80]\\); print\\('gtag:', \\(a.get\\('gtag_id',''\\) or '\\(empty\\)'\\)[:80]\\)\")"
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); a=d.get\\('analytics',{}\\); print\\('verification:', \\(a.get\\('google_site_verification',''\\) or '\\(empty\\)'\\)[:80]\\); print\\('gtag:', \\(a.get\\('gtag_id',''\\) or '\\(empty\\)'\\)[:80]\\)\")",
+      "Bash(awk '{print $5, $9}')",
+      "Bash(awk '{print $5/1024, $9}')",
+      "Bash(awk '{print $5/1024\"KB\", $9}')"
     ]
   }
 }
