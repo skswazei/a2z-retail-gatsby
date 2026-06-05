@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Seo from "@/components/Seo";
+import Seo, { CONTACT_EMAIL, CONTACT_TELEPHONE } from "@/components/Seo";
 import { Link } from "gatsby";
 import { ShoppingCart, Package, Users, BarChart3, Globe, Heart, CheckCircle, ArrowRight, Store, CreditCard, TrendingUp, Shield, Star, Quote, Play } from "lucide-react";
 import ClientOnly from "@/components/ClientOnly";
@@ -591,9 +591,9 @@ export const Head = () => (
       "description": "All-in-one POS platform for liquor stores and neighborhood markets. POS, inventory, suppliers, payments, and reporting in one system.",
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+1-833-229-7677",
+        "telephone": CONTACT_TELEPHONE,
         "contactType": "sales",
-        "email": "contact@a2zpos.io"
+        "email": CONTACT_EMAIL
       },
       "sameAs": []
     }}

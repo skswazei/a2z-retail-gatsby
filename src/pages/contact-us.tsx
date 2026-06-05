@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Seo from "@/components/Seo";
+import Seo, { CONTACT_EMAIL, CONTACT_TELEPHONE } from "@/components/Seo";
 import { CheckCircle, Store, CreditCard, TrendingUp, Shield, Loader2 } from "lucide-react";
 import { submitContactForm } from "@/services/api";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -208,8 +208,8 @@ export const Head = () => (
       "mainEntity": {
         "@type": "Organization",
         "name": "A2Z POS",
-        "telephone": "+1-833-229-7677",
-        "email": "contact@a2zpos.io"
+        "telephone": CONTACT_TELEPHONE,
+        "email": CONTACT_EMAIL
       }
     }}
   />
