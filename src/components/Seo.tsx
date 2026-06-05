@@ -7,11 +7,18 @@ interface BreadcrumbItem {
 }
 
 type ThemeOptionsShape = {
+  contact?: { email?: string; phone?: string };
   analytics?: {
     google_site_verification?: string;
     gtag_id?: string;
   };
 };
+
+// Shared contact details from build-time theme-options (fall back to defaults).
+const themeContact = (bundledThemeOptions as ThemeOptionsShape).contact || {};
+export const CONTACT_EMAIL = themeContact.email || "contact@a2zpos.io";
+export const CONTACT_PHONE = themeContact.phone || "(833) 229-7677";
+export const CONTACT_TELEPHONE = `+1-${CONTACT_PHONE.replace(/\D/g, "")}`;
 
 const analytics = (bundledThemeOptions as ThemeOptionsShape).analytics || {};
 const verificationRaw = (analytics.google_site_verification || "").trim();
@@ -97,9 +104,9 @@ const Seo = ({ title, description, pathname = "", canonicalPath, keywords = "", 
       "logo": defaultImage,
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+1-833-229-7677",
+        "telephone": CONTACT_TELEPHONE,
         "contactType": "sales",
-        "email": "contact@a2zpos.io",
+        "email": CONTACT_EMAIL,
         "availableLanguage": "English"
       }
     }
