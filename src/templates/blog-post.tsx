@@ -65,12 +65,12 @@ const BlogPostTemplate = ({ pageContext }: { pageContext: PageContext }) => {
             </AnimateOnScroll>
             <AnimateOnScroll delay={200}>
               <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
-                {post.author?.name && (
+                {/* {post.author?.name && (
                   <span className="flex items-center gap-1.5">
                     <User className="h-4 w-4" />
                     {post.author.name}
                   </span>
-                )}
+                )} */}
                 <span className="flex items-center gap-1.5">
                   <Calendar className="h-4 w-4" />
                   {formatDate(post.date)}
@@ -95,12 +95,10 @@ const BlogPostTemplate = ({ pageContext }: { pageContext: PageContext }) => {
         )}
 
         <div className="mx-auto max-w-6xl">
-          <AnimateOnScroll delay={100}>
-            <div
-              className="prose prose-lg max-w-none prose-headings:text-foreground prose-headings:font-bold prose-a:text-[#4B36BF] prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-img:rounded-xl prose-img:shadow-lg"
-              dangerouslySetInnerHTML={{ __html: post.content }}
-            />
-          </AnimateOnScroll>
+          <div
+            className="prose prose-lg max-w-none prose-headings:text-foreground prose-headings:font-bold prose-a:text-[#4B36BF] prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-img:rounded-xl prose-img:shadow-lg"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
 
           {post.tags.length > 0 && (
             <AnimateOnScroll delay={200}>
