@@ -7,6 +7,10 @@ require("dotenv").config({
 
 const API_BASE_URL = process.env.GATSBY_API_BASE_URL;
 
+// SSR=true → blog list + detail render client-side (new/edited posts appear
+// without a rebuild, no per-post SEO). SSR=false (default) → fully static blog.
+const SSR = process.env.SSR === "true";
+
 const fetchProducts = async (type, reporter) => {
   if (!API_BASE_URL) {
     reporter.warn(`GATSBY_API_BASE_URL is not set — skipping ${type} page generation`);
@@ -76,14 +80,11 @@ const fetchJson = async (endpoint, reporter) => {
 exports.createPages = async ({ actions, reporter }) => {
   const { createPage } = actions;
   const productTemplate = path.resolve("./src/templates/product.tsx");
-  const blogPostTemplate = path.resolve("./src/templates/blog-post.tsx");
-  const blogListTemplate = path.resolve("./src/templates/blog-list.tsx");
 
-  const [software, hardware, posts, blogSettings] = await Promise.all([
+  // Products are always static (full SEO) in both modes.
+  const [software, hardware] = await Promise.all([
     fetchProducts("software", reporter),
     fetchProducts("hardware", reporter),
-    fetchJson("posts", reporter),
-    fetchJson("blog-settings", reporter),
   ]);
 
   [...software, ...hardware].forEach((product) => {
@@ -94,6 +95,32 @@ exports.createPages = async ({ actions, reporter }) => {
       context: { product },
     });
   });
+
+  if (SSR) {
+    // Client-side blog: one list shell + a catch-all detail shell.
+    createPage({
+      path: `/blog`,
+      component: path.resolve("./src/templates/blog-list-dynamic.tsx"),
+    });
+    createPage({
+      path: `/blog-app/`,
+      matchPath: `/blog/*`,
+      component: path.resolve("./src/templates/blog-post-dynamic.tsx"),
+    });
+    reporter.info(
+      `[a2z] Generated ${software.length} software + ${hardware.length} hardware + client-side blog (SSR=true)`
+    );
+    return;
+  }
+
+  // Static blog (default): build every post + paginated list page.
+  const blogPostTemplate = path.resolve("./src/templates/blog-post.tsx");
+  const blogListTemplate = path.resolve("./src/templates/blog-list.tsx");
+
+  const [posts, blogSettings] = await Promise.all([
+    fetchJson("posts", reporter),
+    fetchJson("blog-settings", reporter),
+  ]);
 
   let blogPostCount = 0;
   if (Array.isArray(posts)) {
@@ -134,6 +161,53 @@ exports.createPages = async ({ actions, reporter }) => {
   reporter.info(
     `[a2z] Generated ${software.length} software + ${hardware.length} hardware + ${blogPostCount} blog post + ${blogListCount} blog list pages`
   );
+};
+
+// When SSR=true, add the SPA fallback so direct hits / crawlers on an unbuilt
+// /blog/<slug>/ boot the catch-all shell. Real files (the /blog/ list, assets)
+// always win, so only unbuilt slugs fall through. No-op when SSR=false.
+exports.onPostBuild = async ({ reporter }) => {
+  if (!SSR) return;
+
+  const publicDir = path.join(__dirname, "public");
+
+  // Netlify: non-forced 200 rewrite.
+  const redirectsPath = path.join(publicDir, "_redirects");
+  const redirectRule = "/blog/*  /blog-app/index.html  200";
+  try {
+    let existing = fs.existsSync(redirectsPath) ? fs.readFileSync(redirectsPath, "utf8") : "";
+    if (!existing.includes("/blog-app/index.html")) {
+      existing = existing.replace(/\s*$/, "") + "\n" + redirectRule + "\n";
+      fs.writeFileSync(redirectsPath, existing);
+      reporter.info("[a2z] SSR=true → appended /blog/* SPA rule to public/_redirects");
+    }
+  } catch (err) {
+    reporter.warn(`[a2z] could not update _redirects: ${err.message}`);
+  }
+
+  // Apache / Hostinger: rewrite unbuilt blog paths to the shell, keeping real files.
+  const htaccessPath = path.join(publicDir, ".htaccess");
+  const htaccessBlock = [
+    "",
+    "# A2Z SSR=true — client-side blog SPA fallback",
+    "<IfModule mod_rewrite.c>",
+    "  RewriteEngine On",
+    "  RewriteBase /",
+    "  RewriteCond %{REQUEST_FILENAME} !-f",
+    "  RewriteCond %{REQUEST_FILENAME} !-d",
+    "  RewriteRule ^blog/.+ /blog-app/index.html [L]",
+    "</IfModule>",
+    "",
+  ].join("\n");
+  try {
+    let existing = fs.existsSync(htaccessPath) ? fs.readFileSync(htaccessPath, "utf8") : "";
+    if (!existing.includes("client-side blog SPA fallback")) {
+      fs.writeFileSync(htaccessPath, existing.replace(/\s*$/, "") + "\n" + htaccessBlock);
+      reporter.info("[a2z] SSR=true → appended blog SPA fallback to public/.htaccess");
+    }
+  } catch (err) {
+    reporter.warn(`[a2z] could not update .htaccess: ${err.message}`);
+  }
 };
 
 exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {

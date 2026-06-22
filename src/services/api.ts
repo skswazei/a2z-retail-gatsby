@@ -159,6 +159,8 @@ export interface BlogPost extends BlogPostSummary {
   seo: {
     title: string;
     description: string;
+    keywords?: string;
+    source?: "yoast" | "aioseo" | "core";
   };
 }
 
