@@ -255,7 +255,7 @@ const Homepage = () => {
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-px bg-gradient-to-r from-[#4B36BF] to-[#568EF5] group-hover:w-32 transition-all duration-500"></div>
         </div>
         <p className="body-text mx-auto max-w-2xl">
-          A2Z brings the essential systems of modern retail together in one platform so merchants can simplify operations, improve visibility, and create new opportunities for growth.
+          A2Z brings the essential systems of modern retail together in one platform so merchants can simplify operations, improve visibility, and create new opportunities for growthwith powerful POS retail software.
         </p>
       </AnimateOnScroll>
       <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
@@ -293,7 +293,7 @@ const Homepage = () => {
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-px bg-gradient-to-r from-[#4B36BF] to-[#568EF5] group-hover:w-32 transition-all duration-500"></div>
           </div>
           <p className="body-text mx-auto max-w-2xl">
-            Click through each module to see how A2Z POS connects every part of your store.<br />One platform that brings it all together.
+            Click through each module to see how A2Z POS connects every part of your store.<br />One platform that brings it all together for the modern POS retail store.
           </p>
         </AnimateOnScroll>
 
@@ -563,7 +563,7 @@ const Homepage = () => {
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-px bg-gradient-to-r from-white/40 to-white/40 group-hover:w-32 transition-all duration-500"></div>
         </div>
         <p className="mx-auto mb-10 text-lg text-white/80" style={{maxWidth: "none"}}>
-          See how A2Z connects POS, inventory, suppliers, payments, delivery apps,<br />compliance tools, and reporting into one unified retail growth platform.
+          See how A2Z connects POS, inventory, suppliers, payments, delivery apps,<br />compliance tools, and reporting into one unified retail growth platform designed for businesses using POS systems for retail stores..
         </p>
         <div className="flex justify-center">
           <button onClick={openDemoModal} className="bg-white text-[#4B36BF] font-semibold px-8 py-3.5 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,255,255,0.3)]">
