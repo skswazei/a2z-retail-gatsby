@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Seo, { CONTACT_EMAIL, CONTACT_TELEPHONE } from "@/components/Seo";
+import { getPageSeo } from "@/lib/pageSeo";
 import { Link } from "gatsby";
 import { ShoppingCart, Package, Users, BarChart3, Globe, Heart, CheckCircle, ArrowRight, Store, CreditCard, TrendingUp, Shield, Star, Quote, Play } from "lucide-react";
 import ClientOnly from "@/components/ClientOnly";
@@ -576,12 +577,15 @@ const Homepage = () => {
   );
 };
 
-export const Head = () => (
+export const Head = () => {
+  const seo = getPageSeo("home");
+  return (
   <Seo
-    title="A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets"
-    description="One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets. Stop juggling multiple tools."
+    title={seo.title || "A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets"}
+    description={seo.description || "One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets. Stop juggling multiple tools."}
     pathname="/"
-    keywords="POS system, liquor store POS, neighborhood market POS, retail POS, inventory management, A2Z POS"
+    keywords={seo.keywords || "POS system, liquor store POS, neighborhood market POS, retail POS, inventory management, A2Z POS"}
+    ogImage={seo.og_image || undefined}
     jsonLd={{
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -598,6 +602,7 @@ export const Head = () => (
       "sameAs": []
     }}
   />
-);
+  );
+};
 
 export default Homepage;

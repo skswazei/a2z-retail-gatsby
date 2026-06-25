@@ -1,5 +1,6 @@
 import React from "react";
 import Seo from "@/components/Seo";
+import { getPageSeo } from "@/lib/pageSeo";
 import { Quote } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useDemoModal } from "@/components/DemoModal";
@@ -107,14 +108,18 @@ const SuccessStories = () => {
   );
 };
 
-export const Head = () => (
+export const Head = () => {
+  const seo = getPageSeo("success-stories");
+  return (
   <Seo
-    title="Success Stories — Merchant Testimonials"
-    description="See how independent retailers use A2Z POS to simplify operations and manage their store with greater visibility."
+    title={seo.title || "Success Stories — Merchant Testimonials"}
+    description={seo.description || "See how independent retailers use A2Z POS to simplify operations and manage their store with greater visibility."}
     pathname="/about/success-stories"
-    keywords="A2Z POS reviews, merchant testimonials, POS success stories"
+    keywords={seo.keywords || "A2Z POS reviews, merchant testimonials, POS success stories"}
+    ogImage={seo.og_image || undefined}
     breadcrumbs={[{name:"Home",url:"/"},{name:"About",url:"/about/success-stories"},{name:"Success Stories",url:"/about/success-stories"}]}
   />
-);
+  );
+};
 
 export default SuccessStories;

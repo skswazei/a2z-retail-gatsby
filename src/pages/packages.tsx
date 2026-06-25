@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Seo from "@/components/Seo";
+import { getPageSeo } from "@/lib/pageSeo";
 import { CheckCircle } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useDemoModal } from "@/components/DemoModal";
@@ -447,12 +448,15 @@ const PackagesPage = () => {
   );
 };
 
-export const Head = () => (
+export const Head = () => {
+  const seo = getPageSeo("packages");
+  return (
   <Seo
-    title="Packages & Pricing — Tailored Plans for Your Store"
-    description="Explore A2Z POS pricing plans — Essential, Growth, and Enterprise packages tailored for liquor stores and neighborhood markets."
+    title={seo.title || "Packages & Pricing — Tailored Plans for Your Store"}
+    description={seo.description || "Explore A2Z POS pricing plans — Essential, Growth, and Enterprise packages tailored for liquor stores and neighborhood markets."}
     pathname="/packages"
-    keywords="A2Z POS pricing, POS packages, liquor store POS plans, retail POS pricing"
+    keywords={seo.keywords || "A2Z POS pricing, POS packages, liquor store POS plans, retail POS pricing"}
+    ogImage={seo.og_image || undefined}
     breadcrumbs={[{name:"Home",url:"/"},{name:"Packages",url:"/packages"}]}
     jsonLd={{
       "@context": "https://schema.org",
@@ -469,6 +473,7 @@ export const Head = () => (
       }
     }}
   />
-);
+  );
+};
 
 export default PackagesPage;

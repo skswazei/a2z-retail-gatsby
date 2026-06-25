@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Seo, { CONTACT_EMAIL, CONTACT_TELEPHONE } from "@/components/Seo";
+import { getPageSeo } from "@/lib/pageSeo";
 import { CheckCircle, Store, CreditCard, TrendingUp, Shield, Loader2 } from "lucide-react";
 import { submitContactForm } from "@/services/api";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -192,12 +193,15 @@ const ScheduleDemo = () => {
   );
 };
 
-export const Head = () => (
+export const Head = () => {
+  const seo = getPageSeo("contact-us");
+  return (
   <Seo
-    title="Contact Us — Schedule a Demo"
-    description="Book a tailored demo to see how A2Z POS connects POS, inventory, suppliers, payments, and reporting into one platform for your store."
+    title={seo.title || "Contact Us — Schedule a Demo"}
+    description={seo.description || "Book a tailored demo to see how A2Z POS connects POS, inventory, suppliers, payments, and reporting into one platform for your store."}
     pathname="/contact-us"
-    keywords="A2Z POS demo, contact A2Z, schedule demo, POS consultation"
+    keywords={seo.keywords || "A2Z POS demo, contact A2Z, schedule demo, POS consultation"}
+    ogImage={seo.og_image || undefined}
     breadcrumbs={[{name:"Home",url:"/"},{name:"Contact Us",url:"/contact-us"}]}
     jsonLd={{
       "@context": "https://schema.org",
@@ -213,6 +217,7 @@ export const Head = () => (
       }
     }}
   />
-);
+  );
+};
 
 export default ScheduleDemo;

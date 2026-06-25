@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Seo from "@/components/Seo";
+import { getPageSeo } from "@/lib/pageSeo";
 import { ChevronDown, Plus, Minus } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useDemoModal } from "@/components/DemoModal";
@@ -135,12 +136,15 @@ const FAQsPage = () => {
   );
 };
 
-export const Head = () => (
+export const Head = () => {
+  const seo = getPageSeo("faqs");
+  return (
   <Seo
-    title="FAQs — Frequently Asked Questions"
-    description="Find answers to common questions about A2Z POS — setup, features, pricing, hardware, and support."
+    title={seo.title || "FAQs — Frequently Asked Questions"}
+    description={seo.description || "Find answers to common questions about A2Z POS — setup, features, pricing, hardware, and support."}
     pathname="/about/faqs"
-    keywords="A2Z POS FAQ, POS questions, A2Z support"
+    keywords={seo.keywords || "A2Z POS FAQ, POS questions, A2Z support"}
+    ogImage={seo.og_image || undefined}
     breadcrumbs={[{name:"Home",url:"/"},{name:"About",url:"/about/faqs"},{name:"FAQs",url:"/about/faqs"}]}
     jsonLd={{
       "@context": "https://schema.org",
@@ -152,6 +156,7 @@ export const Head = () => (
       }))
     }}
   />
-);
+  );
+};
 
 export default FAQsPage;
