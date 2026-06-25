@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Seo from "@/components/Seo";
+import { getPageSeo } from "@/lib/pageSeo";
 import { CheckCircle } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useDemoModal } from "@/components/DemoModal";
@@ -50,7 +51,7 @@ const tabsData = [
     id: "sales",
     label: "Sales & Checkout",
     title: "Sales & checkout",
-    description: "Everything your cashier needs at the counter. Payments, refunds, discounts, and customer rewards handled in seconds.",
+    description: "Everything your cashier needs at the counter. Payments, refunds, discounts, and customer rewards handled in seconds with merchant POS.",
     badge: "Core checkout features",
     groups: [
       { label: "Payments", chips: ["Cash & card", "SNAP / EBT", "Quick scan", "Discounts", "Refunds", "Void item"] },
@@ -436,7 +437,7 @@ const PackagesPage = () => {
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-px bg-gradient-to-r from-white/40 to-white/40 group-hover:w-32 transition-all duration-500"></div>
           </div>
           <p className="text-white/80 mx-auto mb-8 max-w-xl">
-            Schedule a demo and see how A2Z POS can transform your store operations.
+            Schedule a demo and see how A2Z POS can transform your store operations with integrated POS payment solutions.
           </p>
           <button onClick={openDemoModal} className="bg-white text-[#4B36BF] font-semibold px-8 py-3.5 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,255,255,0.3)]">
             Schedule a Demo
@@ -447,12 +448,15 @@ const PackagesPage = () => {
   );
 };
 
-export const Head = () => (
+export const Head = () => {
+  const seo = getPageSeo("packages");
+  return (
   <Seo
-    title="Packages & Pricing — Tailored Plans for Your Store"
-    description="Explore A2Z POS pricing plans — Essential, Growth, and Enterprise packages tailored for liquor stores and neighborhood markets."
+    title={seo.title || "Packages & Pricing — Tailored Plans for Your Store"}
+    description={seo.description || "Explore A2Z POS pricing plans — Essential, Growth, and Enterprise packages tailored for liquor stores and neighborhood markets."}
     pathname="/packages"
-    keywords="A2Z POS pricing, POS packages, liquor store POS plans, retail POS pricing"
+    keywords={seo.keywords || "A2Z POS pricing, POS packages, liquor store POS plans, retail POS pricing"}
+    ogImage={seo.og_image || undefined}
     breadcrumbs={[{name:"Home",url:"/"},{name:"Packages",url:"/packages"}]}
     jsonLd={{
       "@context": "https://schema.org",
@@ -469,6 +473,7 @@ export const Head = () => (
       }
     }}
   />
-);
+  );
+};
 
 export default PackagesPage;

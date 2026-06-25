@@ -55,6 +55,8 @@ exports.onPreBootstrap = async ({ reporter }) => {
   await Promise.all([
     writeBuildData("menus", "menus.json", reporter),
     writeBuildData("theme-options", "theme-options.json", reporter),
+    writeBuildData("page-seo", "page-seo.json", reporter),
+    writeBuildData("pages-seo", "pages-seo.json", reporter),
   ]);
 };
 

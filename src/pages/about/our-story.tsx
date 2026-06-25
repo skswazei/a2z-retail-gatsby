@@ -1,5 +1,6 @@
 import React from "react";
 import Seo from "@/components/Seo";
+import { getPageSeo } from "@/lib/pageSeo";
 import { Target, Lightbulb, Eye } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useDemoModal } from "@/components/DemoModal";
@@ -116,14 +117,18 @@ const OurStory = () => {
   );
 };
 
-export const Head = () => (
+export const Head = () => {
+  const seo = getPageSeo("our-story");
+  return (
   <Seo
-    title="Our Story — Built by People Who Know Your Industry"
-    description="Three decades of running stores, managing inventory, and solving the problems no generic POS ever could. Learn about the team behind A2Z POS."
+    title={seo.title || "Our Story — Built by People Who Know Your Industry"}
+    description={seo.description || "Three decades of running stores, managing inventory, and solving the problems no generic POS ever could. Learn about the team behind A2Z POS."}
     pathname="/about/our-story"
-    keywords="A2Z POS story, about A2Z, retail technology company"
+    keywords={seo.keywords || "A2Z POS story, about A2Z, retail technology company"}
+    ogImage={seo.og_image || undefined}
     breadcrumbs={[{name:"Home",url:"/"},{name:"About",url:"/about/our-story"},{name:"Our Story",url:"/about/our-story"}]}
   />
-);
+  );
+};
 
 export default OurStory;

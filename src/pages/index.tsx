@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Seo, { CONTACT_EMAIL, CONTACT_TELEPHONE } from "@/components/Seo";
+import { getPageSeo } from "@/lib/pageSeo";
 import { Link } from "gatsby";
 import { ShoppingCart, Package, Users, BarChart3, Globe, Heart, CheckCircle, ArrowRight, Store, CreditCard, TrendingUp, Shield, Star, Quote, Play } from "lucide-react";
 import ClientOnly from "@/components/ClientOnly";
@@ -255,7 +256,7 @@ const Homepage = () => {
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-px bg-gradient-to-r from-[#4B36BF] to-[#568EF5] group-hover:w-32 transition-all duration-500"></div>
         </div>
         <p className="body-text mx-auto max-w-2xl">
-          A2Z brings the essential systems of modern retail together in one platform so merchants can simplify operations, improve visibility, and create new opportunities for growth.
+          A2Z brings the essential systems of modern retail together in one platform so merchants can simplify operations, improve visibility, and create new opportunities for growth with powerful POS retail software.
         </p>
       </AnimateOnScroll>
       <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
@@ -293,7 +294,7 @@ const Homepage = () => {
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-px bg-gradient-to-r from-[#4B36BF] to-[#568EF5] group-hover:w-32 transition-all duration-500"></div>
           </div>
           <p className="body-text mx-auto max-w-2xl">
-            Click through each module to see how A2Z POS connects every part of your store.<br />One platform that brings it all together.
+            Click through each module to see how A2Z POS connects every part of your store.<br />One platform that brings it all together for the modern POS retail store.
           </p>
         </AnimateOnScroll>
 
@@ -563,7 +564,7 @@ const Homepage = () => {
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-px bg-gradient-to-r from-white/40 to-white/40 group-hover:w-32 transition-all duration-500"></div>
         </div>
         <p className="mx-auto mb-10 text-lg text-white/80" style={{maxWidth: "none"}}>
-          See how A2Z connects POS, inventory, suppliers, payments, delivery apps,<br />compliance tools, and reporting into one unified retail growth platform.
+          See how A2Z connects POS, inventory, suppliers, payments, delivery apps,<br />compliance tools, and reporting into one unified retail growth platform designed for businesses using POS systems for retail stores.
         </p>
         <div className="flex justify-center">
           <button onClick={openDemoModal} className="bg-white text-[#4B36BF] font-semibold px-8 py-3.5 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,255,255,0.3)]">
@@ -576,12 +577,15 @@ const Homepage = () => {
   );
 };
 
-export const Head = () => (
+export const Head = () => {
+  const seo = getPageSeo("home");
+  return (
   <Seo
-    title="A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets"
-    description="One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets. Stop juggling multiple tools."
+    title={seo.title || "A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets"}
+    description={seo.description || "One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets. Stop juggling multiple tools."}
     pathname="/"
-    keywords="POS system, liquor store POS, neighborhood market POS, retail POS, inventory management, A2Z POS"
+    keywords={seo.keywords || "POS system, liquor store POS, neighborhood market POS, retail POS, inventory management, A2Z POS"}
+    ogImage={seo.og_image || undefined}
     jsonLd={{
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -598,6 +602,7 @@ export const Head = () => (
       "sameAs": []
     }}
   />
-);
+  );
+};
 
 export default Homepage;

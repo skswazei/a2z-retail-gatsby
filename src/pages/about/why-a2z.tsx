@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import Seo from "@/components/Seo";
+import { getPageSeo } from "@/lib/pageSeo";
 import { CheckCircle, Star, Quote } from "lucide-react";
 import ClientOnly from "@/components/ClientOnly";
 import { TestimonialSlider } from "@/components/SwiperComponents";
@@ -147,14 +148,18 @@ const WhyA2Z = () => {
   );
 };
 
-export const Head = () => (
+export const Head = () => {
+  const seo = getPageSeo("why-a2z");
+  return (
   <Seo
-    title="Why A2Z — Built to Simplify Operations and Support Growth"
-    description="A2Z POS was built exclusively for liquor stores and neighborhood markets. One connected platform, real support, operational simplicity."
+    title={seo.title || "Why A2Z — Built to Simplify Operations and Support Growth"}
+    description={seo.description || "A2Z POS was built exclusively for liquor stores and neighborhood markets. One connected platform, real support, operational simplicity."}
     pathname="/about/why-a2z"
-    keywords="why A2Z POS, POS comparison, best POS for liquor stores"
+    keywords={seo.keywords || "why A2Z POS, POS comparison, best POS for liquor stores"}
+    ogImage={seo.og_image || undefined}
     breadcrumbs={[{name:"Home",url:"/"},{name:"About",url:"/about/why-a2z"},{name:"Why A2Z",url:"/about/why-a2z"}]}
   />
-);
+  );
+};
 
 export default WhyA2Z;
