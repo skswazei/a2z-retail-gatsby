@@ -204,7 +204,7 @@ export const Head = () => (
       "@type": "ContactPage",
       "name": "Contact A2Z POS",
       "url": "https://a2zpos.io/contact-us",
-      "description": "Schedule a demo and see how A2Z POS can transform your store operations.",
+      "description": "Schedule a demo and see how A2Z POS can transform your store operations with integrated POS payment solutions.",
       "mainEntity": {
         "@type": "Organization",
         "name": "A2Z POS",
