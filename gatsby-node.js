@@ -84,12 +84,13 @@ exports.createPages = async ({ actions, reporter }) => {
   const productTemplate = path.resolve("./src/templates/product.tsx");
 
   // Products are always static (full SEO) in both modes.
-  const [software, hardware] = await Promise.all([
+  const [software, hardware, service] = await Promise.all([
     fetchProducts("software", reporter),
     fetchProducts("hardware", reporter),
+    fetchProducts("service", reporter),
   ]);
 
-  [...software, ...hardware].forEach((product) => {
+  [...software, ...hardware, ...service].forEach((product) => {
     if (!product || !product.slug || !product.type) return;
     createPage({
       path: `/${product.type}/${product.slug}`,
@@ -110,7 +111,7 @@ exports.createPages = async ({ actions, reporter }) => {
       component: path.resolve("./src/templates/blog-post-dynamic.tsx"),
     });
     reporter.info(
-      `[a2z] Generated ${software.length} software + ${hardware.length} hardware + client-side blog (SSR=true)`
+      `[a2z] Generated ${software.length} software + ${hardware.length} hardware + ${service.length} service + client-side blog (SSR=true)`
     );
     return;
   }
@@ -161,7 +162,7 @@ exports.createPages = async ({ actions, reporter }) => {
   }
 
   reporter.info(
-    `[a2z] Generated ${software.length} software + ${hardware.length} hardware + ${blogPostCount} blog post + ${blogListCount} blog list pages`
+    `[a2z] Generated ${software.length} software + ${hardware.length} hardware + ${service.length} service + ${blogPostCount} blog post + ${blogListCount} blog list pages`
   );
 };
 

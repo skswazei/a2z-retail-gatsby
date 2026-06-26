@@ -18,6 +18,7 @@ const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [softwareOpen, setSoftwareOpen] = useState(false);
   const [hardwareOpen, setHardwareOpen] = useState(false);
+  const [serviceOpen, setServiceOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const location = useLocation();
   const { openDemoModal } = useDemoModal();
@@ -25,6 +26,9 @@ const Header = () => {
   const menus = useMenus();
   const softwareLinks = menus["header-software"];
   const hardwareLinks = menus["header-hardware"];
+  // Service menu temporarily hidden — uncomment to re-enable the header Services dropdown.
+  // const serviceLinks = menus["header-service"];
+  const serviceLinks = [] as typeof softwareLinks;
 
   const isActive = (path: string) => location.pathname.startsWith(path);
 
@@ -147,6 +151,36 @@ const Header = () => {
                     <div className="absolute top-full left-0 w-64 bg-white/95 backdrop-blur-xl border border-[#4B36BF]/15 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                       <div className="p-2">
                         {hardwareLinks.map((link) => (
+                          <Link
+                            key={link.path}
+                            to={link.path}
+                            className="block p-2 text-sm text-black/80 hover:text-[#4B36BF] hover:bg-[#4B36BF]/10 rounded-lg transition-colors duration-200"
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Service Dropdown */}
+                {serviceLinks.length > 0 && (
+                  <div className="relative group flex items-center">
+                    <div className="flex items-center xl:px-4 lg:px-2 relative group-hover:bg-[#4B36BF]/10 rounded-lg">
+                      <span className={`relative py-2 group-hover:text-[#4B36BF] transition-colors duration-300 flex items-center cursor-pointer whitespace-nowrap text-[15px] xl:text-base lg:text-sm ${
+                        isActive("/service") ? "text-[#4B36BF]" : "text-black/80"
+                      }`}>
+                        <span className="relative z-10">Services</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#4B36BF]/0 to-[#00BCD4]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                      </span>
+                      <svg className="ml-1 w-4 h-4 text-[#1a1a2e]/60 group-hover:text-[#4B36BF] transition-colors duration-300" width="16" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 6L8.5 10L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                    <div className="absolute top-full left-0 w-64 bg-white/95 backdrop-blur-xl border border-[#4B36BF]/15 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                      <div className="p-2">
+                        {serviceLinks.map((link) => (
                           <Link
                             key={link.path}
                             to={link.path}
@@ -308,6 +342,35 @@ const Header = () => {
                       style={{ maxHeight: hardwareOpen ? '500px' : '0', opacity: hardwareOpen ? '1' : '0' }}
                     >
                       {hardwareLinks.map((link) => (
+                        <Link
+                          key={link.path}
+                          to={link.path}
+                          onClick={() => setMobileOpen(false)}
+                          className="block px-4 py-2 text-sm text-black/80 rounded-lg transition-colors duration-200"
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {serviceLinks.length > 0 && (
+                  <>
+                    <button
+                      onClick={() => setServiceOpen(!serviceOpen)}
+                      className="flex w-full items-center justify-between px-4 py-2 text-black/80 transition-colors duration-300 rounded-lg"
+                    >
+                      <span>Services</span>
+                      <svg className={`w-4 h-4 transition-transform duration-300 ${serviceOpen ? 'rotate-180' : ''}`} width="16" height="16" viewBox="0 0 17 16" fill="none">
+                        <path d="M4 6L8.5 10L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <div
+                      className="ml-4 space-y-1 overflow-hidden transition-all duration-300 rounded-lg bg-[#4B36BF]/5"
+                      style={{ maxHeight: serviceOpen ? '500px' : '0', opacity: serviceOpen ? '1' : '0' }}
+                    >
+                      {serviceLinks.map((link) => (
                         <Link
                           key={link.path}
                           to={link.path}

@@ -1,15 +1,15 @@
 {
   "home": {
-    "title": "A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets",
-    "description": "One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets. Stop juggling multiple tools.",
-    "keywords": "POS system, liquor store POS, neighborhood market POS, retail POS, inventory management, A2Z POS",
+    "title": "All-in-One POS Software for Retail & Liquor Stores | A2Z POS",
+    "description": "A2Z POS provides powerful POS software for liquor stores, convenience stores, and retailers. Manage inventory, sales, loyalty programs, and reporting from one platform.",
+    "keywords": "POS system, liquor store pos, neighborhood market pos, retail pos, inventory management system",
     "og_image": "",
     "path": "/"
   },
   "packages": {
-    "title": "Packages & Pricing — Tailored Plans for Your Store",
-    "description": "Explore A2Z POS pricing plans — Essential, Growth, and Enterprise packages tailored for liquor stores and neighborhood markets.",
-    "keywords": "A2Z POS pricing, POS packages, liquor store POS plans, retail POS pricing",
+    "title": "POS Software Pricing & Packages for Retail & Liquor Stores | A2Z POS",
+    "description": "Explore A2Z POS pricing and packages designed for liquor stores, convenience stores, and retailers. Choose the right POS plan to streamline operations and grow sales.",
+    "keywords": "A2Z POS pricing, POS packages, liquor store POS plans, retail pos pricing",
     "og_image": "",
     "path": "/packages"
   },

@@ -18,6 +18,9 @@ const Footer = () => {
   const menus = useMenus();
   const hardwareLinks = menus["footer-hardware"];
   const softwareLinks = menus["footer-software"];
+  // Service menu temporarily hidden — uncomment to re-enable the footer Services column.
+  // const serviceLinks = menus["footer-service"];
+  const serviceLinks = [] as typeof softwareLinks;
   const legalLinks = menus["legal"];
   const hasSocial = Object.values(social).some(Boolean);
   const [email, setEmail] = useState("");
@@ -107,7 +110,7 @@ const Footer = () => {
         </div>
 
         {/* Links Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className={`grid grid-cols-1 sm:grid-cols-2 gap-12 mb-16 ${serviceLinks.length > 0 ? "lg:grid-cols-5" : "lg:grid-cols-4"}`}>
           {/* Software */}
           {softwareLinks.length > 0 && (
             <nav>
@@ -130,6 +133,22 @@ const Footer = () => {
               <h3 className="text-white text-lg font-semibold mb-4">Hardware</h3>
               <ul className="space-y-3">
                 {hardwareLinks.map((link) => (
+                  <li key={link.path}>
+                    <Link to={link.path} className="text-white/80 hover:text-white transition-all duration-300">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
+
+          {/* Services */}
+          {serviceLinks.length > 0 && (
+            <nav>
+              <h3 className="text-white text-lg font-semibold mb-4">Services</h3>
+              <ul className="space-y-3">
+                {serviceLinks.map((link) => (
                   <li key={link.path}>
                     <Link to={link.path} className="text-white/80 hover:text-white transition-all duration-300">
                       {link.label}
