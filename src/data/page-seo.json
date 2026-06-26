@@ -1,50 +1,50 @@
 {
   "home": {
-    "title": "A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets",
-    "description": "One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets. Stop juggling multiple tools.",
-    "keywords": "POS system, liquor store POS, neighborhood market POS, retail POS, inventory management, A2Z POS",
+    "title": "All-in-One POS Software for Retail & Liquor Stores | A2Z POS",
+    "description": "A2Z POS provides powerful POS software for liquor stores, convenience stores, and retailers. Manage inventory, sales, loyalty programs, and reporting from one platform.",
+    "keywords": "POS system, liquor store pos, neighborhood market pos, retail pos, inventory management system",
     "og_image": "",
     "path": "/"
   },
   "packages": {
-    "title": "Packages & Pricing — Tailored Plans for Your Store",
-    "description": "Explore A2Z POS pricing plans — Essential, Growth, and Enterprise packages tailored for liquor stores and neighborhood markets.",
-    "keywords": "A2Z POS pricing, POS packages, liquor store POS plans, retail POS pricing",
+    "title": "POS Software Pricing & Packages for Retail & Liquor Stores | A2Z POS",
+    "description": "Explore A2Z POS pricing and packages designed for liquor stores, convenience stores, and retailers. Choose the right POS plan to streamline operations and grow sales.",
+    "keywords": "A2Z POS pricing, POS packages, liquor store POS plans, retail pos pricing",
     "og_image": "",
     "path": "/packages"
   },
   "our-story": {
-    "title": "Our Story — Built by People Who Know Your Industry",
-    "description": "Three decades of running stores, managing inventory, and solving the problems no generic POS ever could. Learn about the team behind A2Z POS.",
-    "keywords": "A2Z POS story, about A2Z, retail technology company",
+    "title": "Our Story | Retail POS Software for Liquor Stores | A2Z POS",
+    "description": "Explore the A2Z POS story and our mission to deliver powerful retail POS software for liquor stores and neighborhood markets with one connected platform.",
+    "keywords": "A2ZPOS story, about A2Z POS",
     "og_image": "",
     "path": "/about/our-story"
   },
   "why-a2z": {
-    "title": "Why A2Z — Built to Simplify Operations and Support Growth",
-    "description": "A2Z POS was built exclusively for liquor stores and neighborhood markets. One connected platform, real support, operational simplicity.",
-    "keywords": "why A2Z POS, POS comparison, best POS for liquor stores",
+    "title": "Why A2Z POS | Liquor Store POS & Inventory Management",
+    "description": "Learn why A2Z POS is trusted by liquor stores for advanced POS software, inventory management, compliance support, customer loyalty, and business growth tools.",
+    "keywords": "why A2Z POS, best POS for retailers, best POS for liquor stores",
     "og_image": "",
     "path": "/about/why-a2z"
   },
   "success-stories": {
-    "title": "Success Stories — Merchant Testimonials",
-    "description": "See how independent retailers use A2Z POS to simplify operations and manage their store with greater visibility.",
+    "title": "Success Stories | How Retailers Grow with A2Z POS",
+    "description": "Read real customer success stories and discover how A2Z POS helps liquor stores and neighborhood markets improve operations, increase sales, and grow faster.",
     "keywords": "A2Z POS reviews, merchant testimonials, POS success stories",
     "og_image": "",
     "path": "/about/success-stories"
   },
   "faqs": {
-    "title": "FAQs — Frequently Asked Questions",
-    "description": "Find answers to common questions about A2Z POS — setup, features, pricing, hardware, and support.",
-    "keywords": "A2Z POS FAQ, POS questions, A2Z support",
+    "title": "A2Z POS FAQs | Answers About Our Retail POS Software",
+    "description": "Find answers to common questions about A2Z POS, including features, pricing, inventory management, compliance, integrations, onboarding, and customer support.",
+    "keywords": "A2Z POS FAQs, POS questions",
     "og_image": "",
     "path": "/about/faqs"
   },
   "contact-us": {
-    "title": "Contact Us — Schedule a Demo",
-    "description": "Book a tailored demo to see how A2Z POS connects POS, inventory, suppliers, payments, and reporting into one platform for your store.",
-    "keywords": "A2Z POS demo, contact A2Z, schedule demo, POS consultation",
+    "title": "Contact A2Z POS | Talk to Our Retail POS Experts",
+    "description": "Get in touch with the A2Z POS team for product demos, sales inquiries, customer support, or questions about our retail POS software for liquor stores.",
+    "keywords": "A2Z POS demo, POS consultation, contact A2Z",
     "og_image": "",
     "path": "/contact-us"
   }

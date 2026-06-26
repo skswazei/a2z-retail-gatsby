@@ -12,15 +12,19 @@ export interface NavLink {
 export type MenuSlug =
   | "header-hardware"
   | "header-software"
+  | "header-service"
   | "footer-hardware"
   | "footer-software"
+  | "footer-service"
   | "legal";
 
 const MENU_SLUGS: MenuSlug[] = [
   "header-hardware",
   "header-software",
+  "header-service",
   "footer-hardware",
   "footer-software",
+  "footer-service",
   "legal",
 ];
 

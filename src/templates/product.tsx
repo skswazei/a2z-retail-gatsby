@@ -60,12 +60,19 @@ const ProductTemplate = ({ pageContext }: { pageContext: PageContext }) => {
 export const Head = ({ pageContext }: { pageContext: PageContext }) => {
   const { product } = pageContext;
   const pathname = `/${product.type}/${product.slug}`;
-  const typeLabel = product.type === "software" ? "Software" : "Hardware";
+  const typeLabels: Record<string, string> = {
+    software: "Software",
+    hardware: "Hardware",
+    service: "Service",
+  };
+  const typeLabel = typeLabels[product.type] || "Product";
+  const schemaType =
+    product.type === "software" ? "SoftwareApplication" : product.type === "service" ? "Service" : "Product";
   const siteUrl = process.env.GATSBY_SITE_URL || "https://a2zpos.io";
 
   const productSchema: Record<string, any> = {
     "@context": "https://schema.org",
-    "@type": product.type === "software" ? "SoftwareApplication" : "Product",
+    "@type": schemaType,
     name: product.title,
     description: product.seo.description || product.hero.subheadline,
     url: `${siteUrl}${pathname}`,
@@ -78,8 +85,11 @@ export const Head = ({ pageContext }: { pageContext: PageContext }) => {
   if (product.type === "software") {
     productSchema.applicationCategory = "BusinessApplication";
     productSchema.operatingSystem = "Web, Windows, Android";
-  } else {
+  } else if (product.type === "hardware") {
     productSchema.category = "POS Hardware";
+  } else if (product.type === "service") {
+    productSchema.serviceType = product.title;
+    productSchema.provider = { "@type": "Organization", name: "A2Z POS", url: siteUrl };
   }
 
   return (

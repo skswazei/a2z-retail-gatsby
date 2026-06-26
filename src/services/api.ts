@@ -54,7 +54,7 @@ export interface Menu {
 
 export type MenusResponse = Record<string, Menu>;
 
-export type ProductType = "software" | "hardware";
+export type ProductType = "software" | "hardware" | "service";
 
 export interface ProductFeature {
   title: string;
