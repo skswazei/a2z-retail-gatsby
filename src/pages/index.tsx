@@ -206,7 +206,7 @@ const Homepage = () => {
             </div>
           </div>
           <div className="hidden md:block relative">
-            <img src={homepageHero} alt="A2Z POS System" className="absolute right-0 top-1/2 -translate-y-1/2 w-[155%] max-w-none hero-slide-in hero-delay-3" />
+            <img src={homepageHero} alt="A2Z POS System" className="absolute right-0 top-1/2 -translate-y-1/2 w-[140%] max-w-none hero-slide-in hero-delay-3" />
           </div>
         </div>
         <div className="hero-fade-up hero-delay-6" style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', marginTop: '24px' }}>
