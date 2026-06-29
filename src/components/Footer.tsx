@@ -10,7 +10,6 @@ const aboutLinks = [
   { label: "Blogs", path: "/blog" },
   { label: "FAQs", path: "/about/faqs" },
   { label: "Contact Us", path: "/contact-us" },
-  { label: "Careers", path: "/about/careers" },
 ];
 
 const Footer = () => {
