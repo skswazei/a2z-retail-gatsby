@@ -3,6 +3,14 @@
  */
 module.exports = {
   jsxRuntime: "automatic",
+  // No-op adapter. Setting `adapter` here makes Gatsby SKIP its zero-config
+  // auto-install of gatsby-adapter-netlify (see gatsby/dist/utils/adapter/manager.js:
+  // `if (adapterFromGatsbyConfig) use it; else auto-detect`). The Netlify adapter
+  // strips client-only `matchPath` pages, which 404s the SSR=true blog catch-all.
+  // With this no-op (name only; cache/adapt/config are optional), the build emits
+  // raw `public/` — so our manual `_redirects` SPA fallback works on Netlify Git
+  // builds exactly like a manual zip deploy. Remove this only if SSR=false.
+  adapter: { name: "a2z-noop-adapter", adapt() {} },
   siteMetadata: {
     title: `A2Z Retail Solutions`,
     description: `One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets.`,
