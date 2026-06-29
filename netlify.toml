@@ -8,10 +8,6 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  # Opt out of gatsby-adapter-netlify (it drops client-only matchPath pages, which
-  # 404s the SSR=true blog catch-all) and use the legacy @netlify/plugin-gatsby,
-  # which correctly converts client-only routes into SPA redirects.
-  NETLIFY_USE_GATSBY_ADAPTER = "false"
   GATSBY_API_BASE_URL = "https://a2ztemp-78490f.ingress-erytho.ewp.live"
   GATSBY_SITE_URL = "https://a2zpos.io"
   GATSBY_DEFAULT_TITLE = "A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets"
