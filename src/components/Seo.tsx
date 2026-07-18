@@ -61,6 +61,25 @@ interface SeoProps {
   breadcrumbs?: BreadcrumbItem[];
 }
 
+/**
+ * Netlify serves the trailing-slash form (/hardware/pos/) and 301s the
+ * non-slash form to it. Canonical + og:url must therefore ALWAYS carry the
+ * trailing slash, otherwise they point at a URL that redirects back to the
+ * page — an inconsistency that stalls indexing.
+ *
+ * Normalizes any page path to a single leading + trailing slash. Files
+ * (e.g. /404.html) and the root are left alone.
+ */
+export const withTrailingSlash = (p: string): string => {
+  if (!p || p === "/") return "/";
+  const [pathOnly, ...rest] = p.split(/([?#])/);        // don't touch query/hash
+  const suffix = rest.join("");
+  if (/\.[a-zA-Z0-9]+$/.test(pathOnly)) return p;        // has a file extension
+  const leading = pathOnly.startsWith("/") ? pathOnly : `/${pathOnly}`;
+  const normalized = leading.endsWith("/") ? leading : `${leading}/`;
+  return `${normalized}${suffix}`;
+};
+
 const Seo = ({ title, description, pathname = "", canonicalPath, keywords = "", ogImage = "", jsonLd, breadcrumbs }: SeoProps) => {
   const siteUrl = process.env.GATSBY_SITE_URL || "https://a2zpos.io";
   const defaultTitle = process.env.GATSBY_DEFAULT_TITLE || "A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets";
@@ -69,8 +88,8 @@ const Seo = ({ title, description, pathname = "", canonicalPath, keywords = "", 
 
   const pageTitle = title || defaultTitle;
   const pageDescription = description || defaultDescription;
-  const url = `${siteUrl}${pathname}`;
-  const canonicalUrl = `${siteUrl}${canonicalPath ?? pathname}`;
+  const url = `${siteUrl}${withTrailingSlash(pathname)}`;
+  const canonicalUrl = `${siteUrl}${withTrailingSlash(canonicalPath ?? pathname)}`;
   const fullTitle = pageTitle.includes("A2Z") ? pageTitle : `${pageTitle} | A2Z POS`;
 
   const websiteSchema = {
@@ -119,7 +138,7 @@ const Seo = ({ title, description, pathname = "", canonicalPath, keywords = "", 
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": `${siteUrl}${item.url}`
+      "item": `${siteUrl}${withTrailingSlash(item.url)}`
     }))
   } : null;
 

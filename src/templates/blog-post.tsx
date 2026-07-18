@@ -1,5 +1,5 @@
 import React from "react";
-import Seo from "@/components/Seo";
+import Seo, { withTrailingSlash } from "@/components/Seo";
 import BlogPostView from "@/components/blog/BlogPostView";
 import { BlogPost } from "@/services/api";
 
@@ -36,7 +36,7 @@ export const Head = ({ pageContext }: { pageContext: PageContext }) => {
         dateModified: post.modified,
         author: post.author ? { "@type": "Person", name: post.author.name } : undefined,
         image: post.featured_image?.url,
-        url: `${siteUrl}${pathname}`,
+        url: `${siteUrl}${withTrailingSlash(pathname)}`,
         publisher: {
           "@type": "Organization",
           name: "A2Z POS",

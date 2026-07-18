@@ -207,7 +207,7 @@ export const Head = () => {
       "@context": "https://schema.org",
       "@type": "ContactPage",
       "name": "Contact A2Z POS",
-      "url": "https://a2zpos.io/contact-us",
+      "url": "https://a2zpos.io/contact-us/",
       "description": "Schedule a demo and see how A2Z POS can transform your store operations with integrated POS payment solutions.",
       "mainEntity": {
         "@type": "Organization",
