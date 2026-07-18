@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Seo from "@/components/Seo";
+import Seo, { withTrailingSlash } from "@/components/Seo";
 import SoftwarePageLayout from "@/components/SoftwarePageLayout";
 import { fetchProduct, Product } from "@/services/api";
 
@@ -75,7 +75,7 @@ export const Head = ({ pageContext }: { pageContext: PageContext }) => {
     "@type": schemaType,
     name: product.title,
     description: product.seo.description || product.hero.subheadline,
-    url: `${siteUrl}${pathname}`,
+    url: `${siteUrl}${withTrailingSlash(pathname)}`,
     brand: { "@type": "Brand", name: "A2Z POS" },
     manufacturer: { "@type": "Organization", name: "A2Z POS", url: siteUrl },
   };
