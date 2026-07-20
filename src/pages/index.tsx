@@ -137,30 +137,45 @@ const Homepage = () => {
       `}</style>
       <img src={heroWatermark} alt="" className="pointer-events-none absolute inset-0 w-full h-full object-cover hero-fade-in hero-delay-3" />
       <style>{`
-        .hero-container { margin: 0 auto; padding: 48px 16px; position: relative; }
+        .hero-container { margin: 0 auto; padding: 16px 16px 48px; position: relative; }
         @media (min-width: 768px) { .hero-container { padding: 80px 48px; } }
+        /* Side-by-side only from lg. Below that the nowrap h1 (~702px) consumed
+           the whole 2fr column and collapsed the image column to 0 width, which
+           is why the hero image was invisible on tablet. */
         .hero-grid { display: grid; gap: 16px; align-items: center; grid-template-columns: 1fr; }
-        @media (min-width: 768px) { .hero-grid { grid-template-columns: 2fr 1fr; } }
+        @media (min-width: 1024px) { .hero-grid { grid-template-columns: 2fr 1fr; } }
+        /* Headline wraps naturally on mobile. nowrap is md+ only — on small
+           screens it forced the h1 to 527px and clipped the hero content.
+           The <br/> sentence breaks are kept at every size (removing them
+           would run the sentences together: "tools.Run"). */
+        .hero-title { white-space: normal; }
+        @media (min-width: 1024px) { .hero-title { white-space: nowrap; } }
       `}</style>
       <div className="hero-container">
         <div className="hero-grid">
           <div>
             <p className="font-semibold hero-fade-up hero-delay-1" style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.15rem', color: '#1fa868', lineHeight: 1.8, letterSpacing: 'normal', marginBottom: '12px' }}>Built for liquor stores and neighborhood markets.</p>
             <h1
-              className="mb-6 text-4xl font-extrabold leading-[1.1] tracking-tight md:text-5xl hero-fade-up hero-delay-2"
+              className="hero-title mb-6 text-3xl font-extrabold leading-[1.15] tracking-tight sm:text-4xl md:text-5xl md:leading-[1.1] hero-fade-up hero-delay-2"
               style={{
                 fontFamily: 'Nunito, sans-serif',
                 background: 'linear-gradient(to right, #4B36BF, #568EF5)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                whiteSpace: 'nowrap',
               }}
             >
               Stop juggling multiple tools.<br />
               Run your entire store<br />
               From One Platform.
             </h1>
+            {/* Stacked hero image for mobile/tablet — the lg+ layout shows it in
+                the second grid column instead (see below). */}
+            <img
+              src={homepageHero}
+              alt="A2Z POS System"
+              className="mx-auto mb-6 block w-full max-w-[460px] hero-fade-up hero-delay-3 lg:hidden"
+            />
             <p className="hero-fade-up hero-delay-3" style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.15rem', fontWeight: 400, color: '#4b5563', lineHeight: 1.8, letterSpacing: 'normal', maxWidth: '32rem', marginBottom: '32px' }}>
               One platform for POS, inventory, suppliers, payments, and reporting. Always know what you have, what you're making, and what to do next.
             </p>
@@ -205,7 +220,7 @@ const Homepage = () => {
               >See How It Works</button>
             </div>
           </div>
-          <div className="hidden md:block relative">
+          <div className="hidden lg:block relative">
             <img src={homepageHero} alt="A2Z POS System" className="absolute right-0 top-1/2 -translate-y-1/2 w-[140%] max-w-none hero-slide-in hero-delay-3" />
           </div>
         </div>
@@ -364,7 +379,7 @@ const Homepage = () => {
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex flex-col items-center gap-8">
           <p className="text-sm font-medium text-[#4B36BF]/70 uppercase tracking-[0.15em]">Trusted Partners</p>
-          <div className="flex justify-center">
+          <div className="relative mx-auto w-full min-w-0 max-w-[700px]">
             <ClientOnly>
               <PartnerSlider
                 partners={[
@@ -372,9 +387,33 @@ const Homepage = () => {
                   { src: trueageLogo, alt: "TrueAge" },
                   { src: ubereatsLogo, alt: "UberEats" },
                 ]}
+                prevClass="partner-prev"
+                nextClass="partner-next"
                 onSwiper={(swiper) => { swiperRef.current = swiper; }}
               />
             </ClientOnly>
+            {/* Arrows sit BELOW the slider until lg (no room beside it without
+                overlapping the logos or overflowing the page — at 768px there's
+                only ~34px of margin, less than the 56px offset), and outside the
+                slider edges from lg+ where the margins are ~130px. */}
+            <div className="mt-5 flex justify-center gap-4 lg:mt-0">
+              <button
+                aria-label="Previous partners"
+                className="partner-prev flex h-9 w-9 items-center justify-center rounded-full border border-border bg-white text-[#4B36BF] shadow-md transition-all duration-300 hover:border-[#4B36BF] hover:bg-[#4B36BF] hover:text-white lg:absolute lg:-left-14 lg:top-1/2 lg:z-10 lg:h-10 lg:w-10 lg:-translate-y-1/2 [&.swiper-button-disabled]:pointer-events-none [&.swiper-button-disabled]:opacity-0"
+              >
+                <svg className="h-4 w-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+              <button
+                aria-label="Next partners"
+                className="partner-next flex h-9 w-9 items-center justify-center rounded-full border border-border bg-white text-[#4B36BF] shadow-md transition-all duration-300 hover:border-[#4B36BF] hover:bg-[#4B36BF] hover:text-white lg:absolute lg:-right-14 lg:top-1/2 lg:z-10 lg:h-10 lg:w-10 lg:-translate-y-1/2 [&.swiper-button-disabled]:pointer-events-none [&.swiper-button-disabled]:opacity-0"
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>

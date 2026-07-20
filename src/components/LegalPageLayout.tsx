@@ -44,7 +44,7 @@ const LegalPageLayout = ({ slug, fallbackTitle }: LegalPageLayoutProps) => {
         <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-[#568EF5]/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s' }}></div>
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#4B36BF 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
 
-        <div className="mx-auto px-4 pt-12 pb-24 md:px-8 md:pt-16 md:pb-32 relative">
+        <div className="mx-auto px-4 pb-24 md:px-8 md:pt-8 md:pb-32 relative">
           <div className="mx-auto max-w-9xl">
             <Breadcrumb />
           </div>
