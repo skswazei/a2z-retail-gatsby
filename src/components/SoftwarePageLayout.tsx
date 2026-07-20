@@ -65,12 +65,23 @@ const SoftwarePageLayout = ({
       <img src={heroWatermark} alt="" className="pointer-events-none absolute inset-0 w-full h-full object-cover watermark-fade-7" />
       <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#4B36BF]/5 rounded-full blur-3xl"></div>
       <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#568EF5]/5 rounded-full blur-3xl"></div>
-      <div className="mx-auto px-4 pt-10 pb-20 md:px-8 md:pt-12 md:pb-28 relative">
+      <div className="mx-auto px-4 pt-4 pb-20 md:px-8 md:pt-8 md:pb-28 relative">
         <div className="mx-auto max-w-9xl">
           <Breadcrumb />
         </div>
+        {/* Stacked hero image for mobile/tablet — below the breadcrumb, above the
+            title. The lg+ layout shows it in the second grid column instead. */}
+        {heroImage && (
+          <div className="mx-auto mt-6 max-w-7xl lg:hidden">
+            <img
+              src={heroImage}
+              alt={heroImageAlt || "Product feature overview"}
+              className={`mx-auto block w-full max-w-md ${heroImageShadow ? "rounded-2xl shadow-lg" : ""} soft-fade-in-right soft-delay-1`}
+            />
+          </div>
+        )}
         <div className="mx-auto max-w-7xl">
-          <div className="grid items-center gap-10 md:grid-cols-2">
+          <div className="grid items-center gap-10 lg:grid-cols-2">
             <div>
               <h1
                 className="mb-6 text-4xl font-extrabold !leading-[1.3] md:text-5xl bg-gradient-to-r from-[#4B36BF] to-[#568EF5] bg-clip-text text-transparent soft-fade-up"
@@ -83,7 +94,7 @@ const SoftwarePageLayout = ({
                 <button onClick={openDemoModal} className="btn-primary-gradient transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(75,54,191,0.3)]">Get a Free Demo</button>
               </div>
             </div>
-            <div className="hidden md:flex items-center justify-center">
+            <div className="hidden lg:flex items-center justify-center">
               {heroImage ? (
                 <img src={heroImage} alt={heroImageAlt || "Product feature overview"} className={`w-full max-w-xl ${heroImageShadow ? "rounded-2xl shadow-lg" : ""} soft-fade-in-right soft-delay-2 transition-transform duration-500 hover:scale-[1.02]`} />
               ) : (

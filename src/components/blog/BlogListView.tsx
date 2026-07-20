@@ -37,7 +37,7 @@ const BlogListView = ({ posts, pagination, emptyState }: BlogListViewProps) => (
       <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#4B36BF]/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "4s" }}></div>
       <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-[#568EF5]/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "5s" }}></div>
 
-      <div className="mx-auto px-4 pt-12 pb-24 md:px-8 md:pt-16 md:pb-32 relative">
+      <div className="mx-auto px-4 pb-24 md:px-8 md:pt-8 md:pb-32 relative">
         <div className="mx-auto max-w-9xl">
           <Breadcrumb />
         </div>

@@ -16,6 +16,8 @@ const aboutLinks = [
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  // Mobile-menu accordions: collapsed by default; tap a section header to expand.
+  // These states are used only in the mobile menu.
   const [softwareOpen, setSoftwareOpen] = useState(false);
   const [hardwareOpen, setHardwareOpen] = useState(false);
   const [serviceOpen, setServiceOpen] = useState(false);
@@ -36,7 +38,7 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Pre-header */}
       <div className="w-full h-10 bg-gradient-to-r from-[#4B36BF] to-[#568EF5]">
-        <div className="max-w-[98%] h-full mx-auto px-4 flex items-center justify-between text-white text-sm">
+        <div className="max-w-[98%] h-full mx-auto px-4 flex items-center justify-between text-white text-xs sm:text-sm">
           <div className="flex items-center xl:space-x-6 lg:space-x-4 space-x-3">
             <button
               onClick={() => {
@@ -66,7 +68,7 @@ const Header = () => {
           </div>
           <div className="flex items-center xl:space-x-6 lg:space-x-4 space-x-3">
             {contact.email && (
-              <a href={mailHref(contact.email)} className="hidden sm:flex items-center hover:text-white/90 whitespace-nowrap">
+              <a href={mailHref(contact.email)} className="flex items-center hover:text-white/90 whitespace-nowrap">
                 <svg className="w-4 h-4 xl:mr-2 lg:mr-1.5 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
@@ -75,7 +77,7 @@ const Header = () => {
               </a>
             )}
             {contact.phone && (
-              <a href={telHref(contact.phone)} className="hidden sm:flex items-center hover:text-white/90 whitespace-nowrap">
+              <a href={telHref(contact.phone)} className="flex items-center hover:text-white/90 whitespace-nowrap">
                 <svg className="w-4 h-4 xl:mr-2 lg:mr-1.5 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                 </svg>
@@ -296,7 +298,10 @@ const Header = () => {
             <div className={`lg:hidden transition-all duration-500 overflow-hidden ${
               mobileOpen ? 'max-h-[80vh] mt-4' : 'max-h-0'
             }`}>
-              <nav className="flex flex-col space-y-2 pb-4 max-h-[75vh] overflow-y-auto">
+              {/* [&>*]:shrink-0 — without it, flexbox shrinks the (overflow-hidden)
+                  submenu panels to fit max-h instead of letting the nav scroll,
+                  which clipped expanded submenus to 2-3 links on short screens. */}
+              <nav className="flex flex-col space-y-2 pb-4 max-h-[75vh] overflow-y-auto [&>*]:shrink-0">
                 {softwareLinks.length > 0 && (
                   <>
                     <button

@@ -49,25 +49,37 @@ interface Partner {
   alt: string;
 }
 
-export const PartnerSlider = ({ partners, onSwiper }: { partners: Partner[]; onSwiper?: (swiper: any) => void }) => {
+export const PartnerSlider = ({ partners, onSwiper, prevClass, nextClass }: { partners: Partner[]; onSwiper?: (swiper: any) => void; prevClass?: string; nextClass?: string }) => {
   return (
     <Swiper
-      modules={[Autoplay]}
-      spaceBetween={32}
-      slidesPerView={3}
+      modules={[Autoplay, Navigation]}
+      navigation={prevClass && nextClass ? { prevEl: `.${prevClass}`, nextEl: `.${nextClass}` } : undefined}
+      spaceBetween={12}
+      slidesPerView={2}
+      // Scale logos per viewport. Without these, slidesPerView=3 forced the
+      // slider wider than small screens and overflowed the page horizontally.
+      breakpoints={{
+        480: { slidesPerView: 2, spaceBetween: 24 },
+        768: { slidesPerView: 3, spaceBetween: 32 },
+      }}
       grabCursor={true}
       loop={true}
       autoplay={{ delay: 2500, disableOnInteraction: false, pauseOnMouseEnter: true }}
       speed={800}
       onSwiper={onSwiper}
-      className="!py-4"
+      // w-full + min-w-0 let it shrink inside the flex parent (flex items
+      // default to min-width:auto, which is what pushed it past the viewport).
+      className="!py-4 w-full min-w-0"
       style={{ maxWidth: "700px" }}
     >
       {partners.map((p) => (
         <SwiperSlide key={p.alt}>
           <div className="flex justify-center">
-            <div className="relative w-[140px] h-[140px] sm:w-[160px] sm:h-[160px] md:w-[180px] md:h-[180px] xl:w-[200px] xl:h-[200px]
-              bg-white p-5
+            {/* Fluid on mobile (w-full + max-w) so the logo fills its slide instead
+                of leaving dead space; fixed sizes from sm+ keep the desktop look. */}
+            <div className="relative aspect-square w-full max-w-[160px] p-2
+              sm:w-[160px] sm:h-[160px] sm:max-w-none sm:p-5 md:w-[180px] md:h-[180px] xl:w-[200px] xl:h-[200px]
+              bg-white
               transition-all duration-300 origin-center
               hover:scale-110 hover:z-10">
               <div className="w-full h-full relative flex items-center justify-center">
