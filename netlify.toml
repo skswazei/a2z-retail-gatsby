@@ -8,7 +8,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  GATSBY_API_BASE_URL = "https://a2ztemp-78490f.ingress-erytho.ewp.live"
+  GATSBY_API_BASE_URL = "https://a2zpos-78490f.ingress-baronn.ewp.live"
   GATSBY_SITE_URL = "https://a2zpos.io"
   GATSBY_DEFAULT_TITLE = "A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets"
   GATSBY_DEFAULT_DESCRIPTION = "One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets."

@@ -4,7 +4,7 @@ import { CheckCircle, Clock, Video, ChevronLeft, ChevronRight, Globe, Calendar, 
 import { SchedulingSettingsType } from "@/types/scheduling";
 import { generateTimeSlots } from "@/utils/scheduling";
 
-const API_BASE = "https://a2ztemp-78490f.ingress-erytho.ewp.live/wp-json/a2z-appointments/v1";
+const API_BASE = "https://a2zpos-78490f.ingress-baronn.ewp.live/wp-json/a2z-appointments/v1";
 
 const today = new Date();
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
