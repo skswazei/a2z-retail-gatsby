@@ -23,7 +23,47 @@ module.exports = {
     {
       resolve: `gatsby-plugin-sitemap`,
       options: {
-        excludes: [`/404`, `/dev-404-page`],
+        // `/sitemap` is the human-readable HTML sitemap page, and `/blog/page/N`
+        // is pagination — neither belongs in the XML sitemap.
+        excludes: [`/404`, `/dev-404-page`, `/sitemap`, `/blog/page/*`],
+        // pageContext is pulled in so blog posts can carry their real WordPress
+        // edit date as lastmod instead of every URL sharing the build timestamp.
+        query: `{
+          site { siteMetadata { siteUrl } }
+          allSitePage { nodes { path pageContext } }
+        }`,
+        resolvePages: ({ allSitePage }) => allSitePage.nodes,
+        serialize: (page) => {
+          const path = page.path;
+          // Priority tiers mirror the reference sitemap:
+          //   home 1.0 > blog posts 0.9 > product/service/commercial 0.8 > about/legal 0.7
+          let priority = 0.7;
+          if (path === `/`) {
+            priority = 1.0;
+          } else if (/^\/blog\/.+/.test(path)) {
+            priority = 0.9;
+          } else if (
+            /^\/(software|hardware|service)\//.test(path) ||
+            path === `/packages/` ||
+            path === `/blog/`
+          ) {
+            priority = 0.8;
+          }
+          // Blog posts carry the WordPress post object in pageContext (see
+          // gatsby-node.js `context: { post: full }`), so they get their real
+          // edit date. Static pages have no such date and are left without a
+          // lastmod rather than being stamped with a misleading build time.
+          const post = (page.pageContext || {}).post;
+          const modified = post && (post.modified || post.date);
+          const stamp = modified ? new Date(modified) : null;
+          const hasStamp = stamp && !Number.isNaN(stamp.valueOf());
+          return {
+            url: path,
+            changefreq: `daily`,
+            priority,
+            ...(hasStamp ? { lastmod: stamp.toISOString() } : {}),
+          };
+        },
       },
     },
     {
