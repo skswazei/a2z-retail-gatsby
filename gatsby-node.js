@@ -16,14 +16,32 @@ const SSR = process.env.SSR === "true";
 // page from the build, so a published URL went 404 on the live site.
 // Transient failures (network error, timeout, 429, 5xx) are retried with
 // backoff; anything else (e.g. 404) is returned straight away.
-const FETCH_ATTEMPTS = 3;
+//
+// The host rate-limits bursts with 429 (a Netlify build hit it ~12s in), and
+// a 1-2s wait is too short for the limit to reset — so 429 honours
+// Retry-After when sent and otherwise backs off 5s/10s/20s/40s.
+const FETCH_ATTEMPTS = 5;
 const FETCH_TIMEOUT_MS = 30000;
+const RATE_LIMIT_BASE_MS = 5000;
+const MAX_RETRY_AFTER_MS = 60000;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const retryDelayMs = (res, attempt) => {
+  if (res && res.status === 429) {
+    const retryAfter = Number(res.headers.get("retry-after"));
+    if (retryAfter > 0) return Math.min(retryAfter * 1000, MAX_RETRY_AFTER_MS);
+    return RATE_LIMIT_BASE_MS * 2 ** (attempt - 1);
+  }
+  return 1000 * 2 ** (attempt - 1);
+};
 
 const fetchWithRetry = async (url, reporter) => {
   let result = { ok: false, status: 0, data: null, error: "not attempted" };
   for (let attempt = 1; attempt <= FETCH_ATTEMPTS; attempt++) {
+    let res = null;
     try {
-      const res = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+      res = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
       if (res.ok) {
         return { ok: true, status: res.status, data: await res.json(), error: null };
       }
@@ -33,8 +51,11 @@ const fetchWithRetry = async (url, reporter) => {
       result = { ok: false, status: 0, data: null, error: `fetch failed (${err.message})` };
     }
     if (attempt < FETCH_ATTEMPTS) {
-      reporter.warn(`[a2z] ${url} ${result.error} — retrying (${attempt}/${FETCH_ATTEMPTS - 1})`);
-      await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** (attempt - 1)));
+      const delay = retryDelayMs(res, attempt);
+      reporter.warn(
+        `[a2z] ${url} ${result.error} — retrying in ${delay / 1000}s (${attempt}/${FETCH_ATTEMPTS - 1})`
+      );
+      await sleep(delay);
     }
   }
   return result;
@@ -148,10 +169,14 @@ exports.createPages = async ({ actions, reporter }) => {
     fetchJson("blog-settings", reporter),
   ]);
 
+  // The list endpoint has no content/seo/modified, so each post needs its own
+  // detail request. Space them out so the host's burst limit isn't tripped.
+  const POST_REQUEST_GAP_MS = 500;
   let blogPostCount = 0;
   if (Array.isArray(posts)) {
-    for (const summary of posts) {
+    for (const [index, summary] of posts.entries()) {
       if (!summary || !summary.slug) continue;
+      if (index > 0) await sleep(POST_REQUEST_GAP_MS);
       const url = `${API_BASE_URL}/wp-json/a2z/v1/posts/${summary.slug}`;
       const res = await fetchWithRetry(url, reporter);
       if (!res.ok) {
