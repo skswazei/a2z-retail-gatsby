@@ -59,6 +59,9 @@ interface SeoProps {
   ogImage?: string;
   jsonLd?: Record<string, any>;
   breadcrumbs?: BreadcrumbItem[];
+  // Pages that must never be indexed (e.g. the 404 page — indexing it is what
+  // Search Console reports as "Soft 404").
+  noindex?: boolean;
 }
 
 /**
@@ -80,7 +83,7 @@ export const withTrailingSlash = (p: string): string => {
   return `${normalized}${suffix}`;
 };
 
-const Seo = ({ title, description, pathname = "", canonicalPath, keywords = "", ogImage = "", jsonLd, breadcrumbs }: SeoProps) => {
+const Seo = ({ title, description, pathname = "", canonicalPath, keywords = "", ogImage = "", jsonLd, breadcrumbs, noindex = false }: SeoProps) => {
   const siteUrl = process.env.GATSBY_SITE_URL || "https://a2zpos.io";
   const defaultTitle = process.env.GATSBY_DEFAULT_TITLE || "A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets";
   const defaultDescription = process.env.GATSBY_DEFAULT_DESCRIPTION || "One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets.";
@@ -147,7 +150,7 @@ const Seo = ({ title, description, pathname = "", canonicalPath, keywords = "", 
       <title>{fullTitle}</title>
       <meta name="description" content={pageDescription} />
       {keywords && <meta name="keywords" content={keywords} />}
-      <meta name="robots" content="index, follow" />
+      <meta name="robots" content={noindex ? "noindex, follow" : "index, follow"} />
       <link rel="canonical" href={canonicalUrl} />
 
       {verificationCode && (

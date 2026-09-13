@@ -69,6 +69,7 @@ export const Head = () => (
     title="Page Not Found"
     description="The page you're looking for doesn't exist. Navigate back to the A2Z POS homepage."
     pathname="/404"
+    noindex
   />
 );
 

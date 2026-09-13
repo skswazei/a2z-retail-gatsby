@@ -13,6 +13,85 @@
   GATSBY_DEFAULT_TITLE = "A2Z POS — All-in-One POS for Liquor Stores & Neighborhood Markets"
   GATSBY_DEFAULT_DESCRIPTION = "One platform for POS, inventory, suppliers, payments, and reporting. Built for liquor stores and neighborhood markets."
 
+# Old-site URLs that Google still crawls (Search Console: Not found / Soft 404 /
+# Crawled - not indexed). Each goes to its closest current page. Unrelated old
+# URLs are deliberately left as 404 — redirecting them to / or /blog/ is itself
+# treated as a soft 404. Netlify matches these with or without a trailing slash.
+[[redirects]]
+  from = "/pricing"
+  to = "/packages/"
+  status = 301
+
+[[redirects]]
+  from = "/faq"
+  to = "/about/faqs/"
+  status = 301
+
+[[redirects]]
+  from = "/company"
+  to = "/about/our-story/"
+  status = 301
+
+[[redirects]]
+  from = "/testimonials"
+  to = "/about/success-stories/"
+  status = 301
+
+[[redirects]]
+  from = "/liquor-store"
+  to = "/service/liquor-store-pos/"
+  status = 301
+
+[[redirects]]
+  from = "/store-convenience"
+  to = "/service/bodega-market-pos/"
+  status = 301
+
+[[redirects]]
+  from = "/retail-store"
+  to = "/service/bodega-market-pos/"
+  status = 301
+
+[[redirects]]
+  from = "/payment-processing"
+  to = "/blog/pos-payment-processing-explained-credit-cards-contactless-ebt/"
+  status = 301
+
+[[redirects]]
+  from = "/software"
+  to = "/software/ring-sales/"
+  status = 301
+
+[[redirects]]
+  from = "/hardware"
+  to = "/hardware/pos/"
+  status = 301
+
+[[redirects]]
+  from = "/service"
+  to = "/service/liquor-store-pos/"
+  status = 301
+
+[[redirects]]
+  from = "/about"
+  to = "/about/our-story/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/rise-of-contactless-payments"
+  to = "/blog/how-to-accept-more-payment-types-at-your-store-with-a-modern-pos/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/building-customer-loyalty-digital-age"
+  to = "/blog/how-to-build-a-customer-loyalty-program-for-your-liquor-store-or-bodega/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/seasonal-business-tips-peak-sales"
+  to = "/blog/"
+  status = 301
+
 [[redirects]]
   from = "/sitemap.xml"
   to = "/sitemap-index.xml"

@@ -360,9 +360,9 @@ const AppointmentBooking = () => {
           </button>
         )}
         <div className="mt-auto pt-6 flex flex-wrap gap-x-4 gap-y-1 text-xs">
-          <a href="/terms-of-service" className="text-primary underline">Terms of Service</a>
-          <a href="/privacy-policy" className="text-primary underline">Privacy Policy</a>
-          <a href="/cookie-policy" className="text-primary underline">Cookie Policy</a>
+          <a href="/terms-and-conditions/" className="text-primary underline">Terms of Service</a>
+          <a href="/privacy-policy/" className="text-primary underline">Privacy Policy</a>
+          <a href="/cookie-policy/" className="text-primary underline">Cookie Policy</a>
         </div>
       </div>
 
