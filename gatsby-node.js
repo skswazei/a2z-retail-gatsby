@@ -11,40 +11,61 @@ const API_BASE_URL = process.env.GATSBY_API_BASE_URL;
 // without a rebuild, no per-post SEO). SSR=false (default) → fully static blog.
 const SSR = process.env.SSR === "true";
 
+// The WordPress API is slow (1–5s per request) and occasionally drops one.
+// Before this retry existed, a single dropped request silently removed that
+// page from the build, so a published URL went 404 on the live site.
+// Transient failures (network error, timeout, 429, 5xx) are retried with
+// backoff; anything else (e.g. 404) is returned straight away.
+const FETCH_ATTEMPTS = 3;
+const FETCH_TIMEOUT_MS = 30000;
+
+const fetchWithRetry = async (url, reporter) => {
+  let result = { ok: false, status: 0, data: null, error: "not attempted" };
+  for (let attempt = 1; attempt <= FETCH_ATTEMPTS; attempt++) {
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+      if (res.ok) {
+        return { ok: true, status: res.status, data: await res.json(), error: null };
+      }
+      result = { ok: false, status: res.status, data: null, error: `returned ${res.status}` };
+      if (res.status !== 429 && res.status < 500) return result;
+    } catch (err) {
+      result = { ok: false, status: 0, data: null, error: `fetch failed (${err.message})` };
+    }
+    if (attempt < FETCH_ATTEMPTS) {
+      reporter.warn(`[a2z] ${url} ${result.error} — retrying (${attempt}/${FETCH_ATTEMPTS - 1})`);
+      await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** (attempt - 1)));
+    }
+  }
+  return result;
+};
+
 const fetchProducts = async (type, reporter) => {
   if (!API_BASE_URL) {
     reporter.warn(`GATSBY_API_BASE_URL is not set — skipping ${type} page generation`);
     return [];
   }
   const url = `${API_BASE_URL}/wp-json/a2z/v1/${type}`;
-  try {
-    const res = await fetch(url);
-    if (!res.ok) {
-      reporter.warn(`[${type}] ${url} returned ${res.status} — skipping`);
-      return [];
-    }
-    return await res.json();
-  } catch (err) {
-    reporter.warn(`[${type}] fetch failed (${err.message}) — skipping`);
+  const res = await fetchWithRetry(url, reporter);
+  if (!res.ok) {
+    // Fails `gatsby build` (only warns in develop) rather than deploying a
+    // site with every ${type} page missing.
+    reporter.panicOnBuild(`[${type}] ${url} ${res.error} after ${FETCH_ATTEMPTS} attempts`);
     return [];
   }
+  return res.data;
 };
 
 const writeBuildData = async (endpoint, filename, reporter) => {
   const target = path.join(__dirname, "src/data", filename);
-  try {
-    const res = await fetch(`${API_BASE_URL}/wp-json/a2z/v1/${endpoint}`);
-    if (!res.ok) {
-      reporter.warn(`[a2z] ${endpoint} returned ${res.status} — leaving ${filename} unchanged`);
-      return;
-    }
-    const data = await res.json();
-    fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.writeFileSync(target, JSON.stringify(data, null, 2));
-    reporter.info(`[a2z] wrote ${filename}`);
-  } catch (err) {
-    reporter.warn(`[a2z] ${endpoint} fetch failed: ${err.message}`);
+  const res = await fetchWithRetry(`${API_BASE_URL}/wp-json/a2z/v1/${endpoint}`, reporter);
+  if (!res.ok) {
+    reporter.warn(`[a2z] ${endpoint} ${res.error} — leaving ${filename} unchanged`);
+    return;
   }
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  fs.writeFileSync(target, JSON.stringify(res.data, null, 2));
+  reporter.info(`[a2z] wrote ${filename}`);
 };
 
 exports.onPreBootstrap = async ({ reporter }) => {
@@ -60,23 +81,25 @@ exports.onPreBootstrap = async ({ reporter }) => {
   ]);
 };
 
-const fetchJson = async (endpoint, reporter) => {
+// `required` fails `gatsby build` when the request still fails after retries;
+// otherwise the failure is only warned about and null is returned.
+const fetchJson = async (endpoint, reporter, { required = false } = {}) => {
   if (!API_BASE_URL) {
     reporter.warn(`GATSBY_API_BASE_URL is not set — skipping ${endpoint}`);
     return null;
   }
   const url = `${API_BASE_URL}/wp-json/a2z/v1/${endpoint}`;
-  try {
-    const res = await fetch(url);
-    if (!res.ok) {
-      reporter.warn(`[${endpoint}] ${url} returned ${res.status} — skipping`);
-      return null;
+  const res = await fetchWithRetry(url, reporter);
+  if (!res.ok) {
+    const message = `[${endpoint}] ${url} ${res.error}`;
+    if (required) {
+      reporter.panicOnBuild(`${message} after ${FETCH_ATTEMPTS} attempts`);
+    } else {
+      reporter.warn(`${message} — skipping`);
     }
-    return await res.json();
-  } catch (err) {
-    reporter.warn(`[${endpoint}] fetch failed (${err.message}) — skipping`);
     return null;
   }
+  return res.data;
 };
 
 exports.createPages = async ({ actions, reporter }) => {
@@ -121,7 +144,7 @@ exports.createPages = async ({ actions, reporter }) => {
   const blogListTemplate = path.resolve("./src/templates/blog-list.tsx");
 
   const [posts, blogSettings] = await Promise.all([
-    fetchJson("posts", reporter),
+    fetchJson("posts", reporter, { required: true }),
     fetchJson("blog-settings", reporter),
   ]);
 
@@ -129,8 +152,21 @@ exports.createPages = async ({ actions, reporter }) => {
   if (Array.isArray(posts)) {
     for (const summary of posts) {
       if (!summary || !summary.slug) continue;
-      const full = await fetchJson(`posts/${summary.slug}`, reporter);
-      if (!full) continue;
+      const url = `${API_BASE_URL}/wp-json/a2z/v1/posts/${summary.slug}`;
+      const res = await fetchWithRetry(url, reporter);
+      if (!res.ok) {
+        if (res.status === 404) {
+          // Unpublished between the list and detail requests — genuinely gone.
+          reporter.warn(`[posts/${summary.slug}] ${res.error} — skipping`);
+        } else {
+          reporter.panicOnBuild(
+            `[posts/${summary.slug}] ${url} ${res.error} after ${FETCH_ATTEMPTS} attempts — ` +
+              `failing the build rather than dropping a published post`
+          );
+        }
+        continue;
+      }
+      const full = res.data;
       createPage({
         path: `/blog/${full.slug}`,
         component: blogPostTemplate,
